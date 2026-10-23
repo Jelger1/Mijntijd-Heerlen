@@ -718,7 +718,7 @@ button {
 .term::after {
     content: '';
     position: absolute;
-    inset: -0.75rem -0.25rem;
+    inset: -0.8125rem -0.25rem;
 }
 
 .term[aria-expanded="true"] {
@@ -751,6 +751,125 @@ button {
 .hotspot[aria-expanded="true"]::before {
     background: var(--color-text);
     animation: none;
+}
+
+/* --- Mijnenkaart (gemeentegrens Heerlen + de vier mijnen) --- */
+.mine-map-block {
+    width: 100%;
+    max-width: 28rem;
+    margin-inline: auto;
+}
+
+.mine-map {
+    margin: 0;
+    padding: 1rem;
+    background: var(--color-surface);
+}
+
+.mine-map__title {
+    margin-bottom: 0.75rem;
+    font-size: 1rem;
+    line-height: 1.45;
+    color: var(--accent);
+}
+
+.mine-map__area {
+    position: relative;
+    aspect-ratio: 420 / 340;
+}
+
+.mine-map__svg {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    filter: drop-shadow(0 0 6px rgb(var(--accent-rgb) / 0.5));
+    /* Het zuiden van Heerlen valt buiten de uitsnede: zacht laten weglopen */
+    -webkit-mask-image: linear-gradient(#000 72%, transparent);
+    mask-image: linear-gradient(#000 72%, transparent);
+}
+
+.mine-map__land {
+    fill: rgb(var(--accent-rgb) / 0.12);
+    stroke: var(--accent);
+    stroke-width: 2;
+    stroke-linejoin: round;
+}
+
+/* Staatsmijn als vierkantje, particuliere mijnen als rondje (zoals de badges in de tabel) */
+.mine-map__mine--staats::before,
+.mine-map__key.mine-map__key--staats {
+    border-radius: 2px;
+}
+
+.mine-map__name {
+    position: absolute;
+    top: 50%;
+    left: 72%;
+    transform: translateY(-50%);
+    font-family: var(--font-display);
+    font-size: 0.8rem;
+    line-height: 1;
+    white-space: nowrap;
+    color: var(--color-text);
+    text-shadow: 0 0 4px var(--color-bg), 0 0 8px var(--color-bg);
+    pointer-events: none;
+}
+
+.mine-map__caption {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.35rem 1rem;
+    margin-top: 0.75rem;
+    font-size: 0.8rem;
+    color: rgb(241 239 238 / 0.75);
+}
+
+.mine-map__key {
+    display: inline-block;
+    width: 0.7rem;
+    height: 0.7rem;
+    margin-right: 0.25rem;
+    border-radius: 50%;
+    background: var(--accent);
+    vertical-align: -0.05em;
+}
+
+.mine-map__source {
+    flex-basis: 100%;
+}
+
+.mine-map__details {
+    margin-top: 0.5rem;
+}
+
+.mine-map__details summary {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    min-height: 3rem;
+    font-size: 0.9rem;
+    font-weight: 700;
+    color: var(--accent);
+    cursor: pointer;
+    list-style: none;
+}
+
+.mine-map__details summary::-webkit-details-marker {
+    display: none;
+}
+
+/* Eigen uitklappijltje (het standaardpijltje verdwijnt met display: flex) */
+.mine-map__details summary::before {
+    content: '';
+    border: 0.35em solid transparent;
+    border-left-color: currentColor;
+    border-right: 0;
+    transition: transform 0.2s ease;
+}
+
+.mine-map__details[open] summary::before {
+    transform: rotate(90deg);
 }
 
 /* --- Infokaart (woordenboek, hotspots, mijnenkaart) --- */
@@ -1198,7 +1317,7 @@ button {
 .text-link::after {
     content: '';
     position: absolute;
-    inset: -0.75rem -0.25rem;
+    inset: -0.8125rem -0.25rem;
 }
 
 /* --- Tijdlijn (scrollvoortgang) ---

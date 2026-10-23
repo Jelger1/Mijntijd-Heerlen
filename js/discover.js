@@ -1,6 +1,6 @@
 /* ===========================================
    HEERLEN: DE STORY VAN HET ZWARTE GOUD
-   Ontdekken: woordenboek, hotspots op foto's (en de mijnenkaart)
+   Ontdekken: woordenboek, hotspots op foto's en de mijnenkaart
    Alles opent dezelfde infokaart (#info-card).
    (geladen met defer, na script.js)
    =========================================== */
@@ -98,7 +98,11 @@ function initDiscover() {
 
         const spot = event.target.closest('.hotspot');
         if (spot) {
-            openInfo(spot, { kicker: 'Op de foto', title: spot.dataset.infoTitle, text: spot.dataset.infoText });
+            openInfo(spot, {
+                kicker: spot.dataset.infoKicker ?? 'Op de foto',
+                title: spot.dataset.infoTitle,
+                text: spot.dataset.infoText,
+            });
             return;
         }
 
