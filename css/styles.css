@@ -81,6 +81,7 @@
 html {
     -webkit-text-size-adjust: 100%;
     text-size-adjust: 100%;
+    -webkit-tap-highlight-color: transparent;
 }
 
 body {
@@ -90,7 +91,8 @@ body {
     font-family: var(--font-body);
     font-size: 1rem;
     line-height: 1.45;
-    /* Vangnet; de layout zelf veroorzaakt geen horizontale overflow */
+    /* Vangnet; de layout zelf veroorzaakt geen horizontale overflow (hidden = fallback voor iOS < 16) */
+    overflow-x: hidden;
     overflow-x: clip;
 }
 
@@ -122,6 +124,7 @@ button {
     border: 0;
     padding: 0;
     cursor: pointer;
+    touch-action: manipulation;
 }
 
 [hidden] {
@@ -166,7 +169,9 @@ button {
 
 .intro__frame {
     position: relative;
-    width: 80%;
+    /* Op lage schermen (telefoon liggend) begrenst de hoogte de breedte, zodat de startknop in beeld blijft */
+    width: min(80%, (100vh - 12rem) * 1.7);
+    width: min(80%, (100svh - 12rem) * 1.7);
     max-height: 70vh;
     margin-inline: auto;
     filter: drop-shadow(0 0 var(--glow-near) var(--accent)) drop-shadow(0 0 var(--glow-far) rgb(var(--accent-rgb) / 0.5));
@@ -201,7 +206,8 @@ button {
 }
 
 .intro__start {
-    width: 13.75rem;
+    width: clamp(7.5rem, 35vh, 13.75rem);
+    width: clamp(7.5rem, 35svh, 13.75rem);
     max-width: 100%;
     opacity: 0;
     visibility: hidden;
@@ -329,6 +335,9 @@ button {
     place-items: center;
     width: 3rem;
     height: 3rem;
+    border-radius: 50%;
+    /* Op mobiel/tablet schuift de knop over tekst en foto's heen: donkere achtergrond houdt hem leesbaar */
+    background: rgb(16 16 16 / 0.8);
     color: var(--accent);
     transition: opacity 0.15s ease;
 }
@@ -337,6 +346,12 @@ button {
     width: 2rem;
     height: 2rem;
     fill: currentColor;
+}
+
+@media (min-width: 64em) {
+    .story__home {
+        background: none;
+    }
 }
 
 .chapter {
@@ -810,15 +825,16 @@ button {
     inset: -0.75rem -0.25rem;
 }
 
-/* --- Tijdlijn (scrollvoortgang) --- */
+/* --- Tijdlijn (scrollvoortgang) ---
+   Mobiel: dunne balk bovenaan. Vanaf tablet: verticale rail links met markers.
+   --progress (0–1) wordt gezet door updateProgress() in script.js */
 .timeline {
-    display: none;
     position: fixed;
     top: 0;
-    bottom: 0;
-    left: 2.5rem;
-    z-index: 40;
-    width: 2px;
+    right: 0;
+    left: 0;
+    z-index: 60;
+    height: 3px;
     background: rgb(var(--accent-rgb) / 0.2);
 }
 
@@ -826,12 +842,13 @@ button {
     position: absolute;
     inset: 0;
     background: var(--accent);
-    transform: scaleY(0);
-    transform-origin: top;
+    transform: scaleX(var(--progress, 0));
+    transform-origin: left;
     transition: transform 0.1s ease-out;
 }
 
 .timeline__marker {
+    display: none;
     position: absolute;
     left: -0.5625rem;
     width: 1.25rem;
@@ -850,13 +867,29 @@ button {
 
 @media (min-width: 48em) {
     .timeline {
+        right: auto;
+        bottom: 0;
+        left: 2.5rem;
+        z-index: 40;
+        width: 2px;
+        height: auto;
+    }
+
+    .timeline__fill {
+        transform: scaleY(var(--progress, 0));
+        transform-origin: top;
+    }
+
+    .timeline__marker {
         display: block;
     }
 }
 
 /* --- Video popup --- */
 .video-dialog {
-    width: min(100% - 2rem, 56rem);
+    /* Ook begrensd door de hoogte (video 688 x 464 + sluitknop), anders valt de sluitknop liggend buiten beeld */
+    width: min(100% - 2rem, 56rem, (100vh - 9rem) * 688 / 464);
+    width: min(100% - 2rem, 56rem, (100svh - 9rem) * 688 / 464);
     max-width: none;
     max-height: none;
     padding: 0;

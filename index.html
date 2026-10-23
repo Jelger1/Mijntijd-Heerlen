@@ -4,6 +4,20 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Heerlen: De Story van het Zwarte Goud</title>
+    <meta name="description" content="Een interactieve digitale story over het mijnverleden van Heerlen: van Romeins Coriovallum tot de sluiting van de mijnen en de stad van nu.">
+    <meta name="theme-color" content="#101010">
+
+    <!-- Iconen: tabblad, beginscherm (iOS/Android) -->
+    <link rel="icon" href="favicon.ico" sizes="32x32">
+    <link rel="icon" href="assets/icons/favicon.svg" type="image/svg+xml">
+    <link rel="apple-touch-icon" href="assets/icons/apple-touch-icon.png">
+    <link rel="manifest" href="site.webmanifest">
+
+    <!-- Voorvertoning bij delen (WhatsApp, socials) -->
+    <meta property="og:type" content="website">
+    <meta property="og:locale" content="nl_NL">
+    <meta property="og:title" content="Heerlen: De Story van het Zwarte Goud">
+    <meta property="og:description" content="Een interactieve digitale story over het mijnverleden van Heerlen: van Romeins Coriovallum tot de sluiting van de mijnen en de stad van nu.">
 
     <!-- Fonts: Girdo Black is lokaal (preload), Inter komt van Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -33,7 +47,9 @@
             <div class="intro__inner">
                 <div class="intro__frame">
                     <video id="intro-video" class="intro__video" width="1280" height="720" loop muted autoplay playsinline preload="auto">
-                        <source src="assets/INTRO-VIDEO.mp4" type="video/mp4">
+                        <!-- Volledige versie voor tablet/desktop, lichtere versie voor telefoons -->
+                        <source src="assets/INTRO-VIDEO.mp4" type="video/mp4" media="(min-width: 48em) and (min-height: 32em)">
+                        <source src="assets/video/INTRO-VIDEO-mobiel.mp4" type="video/mp4">
                     </video>
                 </div>
                 <div class="intro__actions">
@@ -111,8 +127,8 @@
                 <div class="chapter__grid">
                     <p class="chapter__text">In het midden van de Tweede Wereldoorlog stuitte Heerlen plotseling op een vergeten wereld. Bij graafwerkzaamheden in het centrum kwam een compleet Romeins badhuis tevoorschijn, dat eeuwenlang verborgen lag onder het zand. Dit was vroeger dé plek om te zien en gezien te worden; na het werk kwamen de inwoners hier samen om te wassen, te roddelen en belangrijke deals te sluiten. Tegenwoordig kun je deze oude 'wellness' nog steeds met eigen ogen bekijken in het Thermenmuseum. Maar na het vertrek van de Romeinen veranderde alles: het ritme, het leven en zelfs het hele landschap...</p>
                     <div class="media-frame">
-                        <video class="media-frame__media media-frame__media--mask-2" width="640" height="480" loop muted playsinline preload="none" data-lazy-video>
-                            <source src="assets/Opgravingen-1940.mp4" type="video/mp4">
+                        <video class="media-frame__media media-frame__media--mask-2" width="640" height="480" loop muted playsinline preload="none" data-poster="assets/video/Opgravingen-1940.jpg" data-lazy-video>
+                            <source src="assets/video/Opgravingen-1940.mp4" type="video/mp4">
                         </video>
                     </div>
                 </div>
@@ -317,8 +333,8 @@
                 <div class="chapter__grid">
                     <p class="chapter__text">De wederopbouw draait op volle toeren en de Limburgse bodem vraagt om meer handen dan de streek kan bieden. In de 'Gezellenhuizen' (*was een soort hotel-pension voor vrijgezelle mijnwerkers) klinken nieuwe ritmes; de geur van sterke espresso en olijfolie waait door de straten. Jongemannen uit Italië en Spanje dalen nu af in de zwarte schachten om de Nederlandse economie te stutten. Heerlen kleurt voor het eerst echt zuidelijk, terwijl de mijnklok onvermoeibaar de maat van de vooruitgang blijft slaan.</p>
                     <div class="media-frame media-frame--narrow">
-                        <video class="media-frame__media media-frame__media--mask-3" width="560" height="560" loop muted playsinline preload="none" data-lazy-video>
-                            <source src="assets/Italiaan.mp4" type="video/mp4">
+                        <video class="media-frame__media media-frame__media--mask-3" width="560" height="560" loop muted playsinline preload="none" data-poster="assets/video/Italiaan.jpg" data-lazy-video>
+                            <source src="assets/video/Italiaan.mp4" type="video/mp4">
                         </video>
                     </div>
                 </div>
@@ -328,8 +344,8 @@
                 <h2 class="chapter__title">Wereldstad in de Heuvels</h2>
                 <div class="chapter__grid">
                     <div class="media-frame media-frame--narrow">
-                        <video class="media-frame__media media-frame__media--mask-4" width="1280" height="720" loop muted playsinline preload="none" data-lazy-video>
-                            <source src="assets/Bakkerij.mp4" type="video/mp4">
+                        <video class="media-frame__media media-frame__media--mask-4" width="720" height="406" loop muted playsinline preload="none" data-poster="assets/video/Bakkerij.jpg" data-lazy-video>
+                            <source src="assets/video/Bakkerij.mp4" type="video/mp4">
                         </video>
                     </div>
                     <p class="chapter__text">De mijnen draaien op volle toeren en de vraag naar arbeiders bereikt een hoogtepunt. Er komen nu werknemers uit allerlei landen, zoals Turkije en Marokko. In de wijken rondom de mijnschachten ontstaat een mix van verschillende culturen. Bij de lokale bakker ligt nu ook platbrood en op de markt hoor je allerlei talen door elkaar. De mijn is niet langer alleen een werkplek, maar een wereldhaven in het binnenland waar duizenden gelukszoekers hun wortels diep in de zwarte aarde planten.</p>
@@ -341,8 +357,8 @@
                 <div class="chapter__grid">
                     <p class="chapter__text">De mijnen gaan dicht. De laatste lift gaat omhoog en de koeltorens worden afgebroken, maar de mensen blijven hier wonen. De nieuwkomers van vroeger zijn nu de opa’s van de stad geworden. Ook al zijn de mijnen nu gesloten, de sfeer van de mijnwerkers merk je nog steeds. Het is een mix geworden van Limburgse trots en invloeden uit de hele wereld. De stad is voorgoed veranderd.</p>
                     <div class="media-frame media-frame--narrow">
-                        <video class="media-frame__media media-frame__media--mask-1" width="688" height="464" loop muted playsinline preload="none" data-lazy-video>
-                            <source src="assets/Hema-Heerlen.mp4" type="video/mp4">
+                        <video class="media-frame__media media-frame__media--mask-1" width="688" height="464" loop muted playsinline preload="none" data-poster="assets/video/Hema-Heerlen.jpg" data-lazy-video>
+                            <source src="assets/video/Hema-Heerlen.mp4" type="video/mp4">
                         </video>
                     </div>
                 </div>
@@ -375,8 +391,8 @@
                 <div class="chapter__grid">
                     <p class="chapter__text">Diep onder de grond is gevaar geen tekst in een handboek, maar de lucht die je inademt. Omdat je het dodelijke, reukloze mijngas niet kunt zien of ruiken, is het felgele vogeltje in zijn kooitje je allerbelangrijkste levenslijn. Zolang de kanarie fluit of onrustig rondhopt, is de lucht veilig, maar zodra het beestje van zijn stokje valt, telt elke seconde om weg te komen voor de onzichtbare dood toeslaat. In deze duisternis betekent arbeidscultuur dat je je leven letterlijk toevertrouwt aan de man naast je; je bent geen collega's, je bent elkaars overlevingsgarantie.</p>
                     <div class="media-frame media-frame--narrow">
-                        <video class="media-frame__media media-frame__media--mask-2" width="752" height="416" loop muted playsinline preload="none" data-lazy-video>
-                            <source src="assets/Kanari.mp4" type="video/mp4">
+                        <video class="media-frame__media media-frame__media--mask-2" width="720" height="398" loop muted playsinline preload="none" data-poster="assets/video/Kanari.jpg" data-lazy-video>
+                            <source src="assets/video/Kanari.mp4" type="video/mp4">
                         </video>
                         <button type="button" class="audio-btn audio-btn--overlay" data-action="audio" data-audio="kanarie-audio" aria-label="Speel kanarie geluid af" aria-pressed="false">
                             <img src="assets/play-sound-yellow.svg" alt="" width="36" height="36">
@@ -511,8 +527,8 @@
                 <h2 class="chapter__title">De Auto gaat de Stad uit</h2>
                 <div class="chapter__grid">
                     <div class="media-frame">
-                        <video class="media-frame__media media-frame__media--mask-3" width="560" height="560" loop muted playsinline preload="none" data-lazy-video>
-                            <source src="assets/Promenade.mp4" type="video/mp4">
+                        <video class="media-frame__media media-frame__media--mask-3" width="560" height="560" loop muted playsinline preload="none" data-poster="assets/video/Promenade.jpg" data-lazy-video>
+                            <source src="assets/video/Promenade.mp4" type="video/mp4">
                         </video>
                     </div>
                     <p class="chapter__text">Heerlen neemt een uniek besluit: de Promenade wordt <strong>voetgangersgebied</strong>. Geïnspireerd door de Lijnbaan in Rotterdam, de eerste winkelstraat speciaal ingericht voor voetgangers, verdwijnen de auto's uit het zicht. Er komen bloembakken, moderne lantaarnpalen in de vorm van bollen en een kunstmatige waterval. Heerlen wordt het absolute centrum van de <strong>koopwoede</strong> in Limburg, waar het kopen van luxe producten en het showen van je nieuwe aankopen de belangrijkste bezigheid wordt.</p>
@@ -560,8 +576,8 @@
                 <div class="chapter__grid">
                     <p class="chapter__text">Het dieptepunt wordt bereikt: warenhuis <strong>V&amp;D gaat failliet</strong>. Het enorme pand aan de Promenade blijft leeg en grijs achter. Terwijl de gemeente zich focust op het nieuwe <strong>Maankwartier</strong> bij het station, een kunstzinnig gebied ontworpen door kunstenaar Michel Huisman, blijft de Promenade achter in een staat van verloedering. De "trots van Heerlen" is veranderd in een zorgenkindje.</p>
                     <div class="media-frame">
-                        <video class="media-frame__media media-frame__media--mask-1" width="640" height="360" loop muted playsinline preload="none" data-lazy-video>
-                            <source src="assets/maankwartier-2016.mp4" type="video/mp4">
+                        <video class="media-frame__media media-frame__media--mask-1" width="640" height="360" loop muted playsinline preload="none" data-poster="assets/video/maankwartier-2016.jpg" data-lazy-video>
+                            <source src="assets/video/maankwartier-2016.mp4" type="video/mp4">
                         </video>
                     </div>
                 </div>
@@ -614,8 +630,8 @@
             </button>
         </form>
         <div class="media-frame video-dialog__frame">
-            <video id="molenberg-video" class="media-frame__media" width="688" height="464" loop muted playsinline preload="none">
-                <source src="assets/Molenberg.mp4" type="video/mp4">
+            <video id="molenberg-video" class="media-frame__media" width="688" height="464" loop muted playsinline preload="none" data-poster="assets/video/Molenberg.jpg">
+                <source src="assets/video/Molenberg.mp4" type="video/mp4">
             </video>
         </div>
     </dialog>

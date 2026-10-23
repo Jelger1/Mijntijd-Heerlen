@@ -10,7 +10,6 @@ const startBtn = document.getElementById('start-btn');
 const steenkoolVideo = document.getElementById('steenkool-video');
 const skipBtn = document.getElementById('skip-video-btn');
 const timeline = document.getElementById('timeline-ui');
-const timelineFill = timeline.querySelector('.timeline__fill');
 const timelineMarkers = timeline.querySelectorAll('.timeline__marker');
 const audioButtons = document.querySelectorAll('[data-action="audio"]');
 const videoDialog = document.getElementById('video-dialog');
@@ -27,6 +26,18 @@ const CHART_SCRIPTS = [
     'https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.2.0/dist/chartjs-plugin-datalabels.min.js',
 ];
 
+// Adres (#hash) per view, zodat terugknop, herladen en delen van een link werken.
+// De introvideo staat er bewust niet in: die heeft een tik nodig om met geluid te starten.
+const ROUTES = {
+    intro: '',
+    navigator: 'keuze',
+    'story-prehistory': 'voor-de-mijnen',
+    'story-welvaart': 'welvaart',
+    'story-migratie': 'migratie',
+    'story-cultuur': 'cultuur',
+    'story-val': 'sluiting',
+};
+
 let skipButtonTimeout = null;
 let migrantChart = null;
 let chartLibrary = null;
@@ -35,13 +46,28 @@ let chartLibrary = null;
 // NAVIGATION LOGIC
 // ===========================================
 
-// Toont precies één view en zet tijdlijn, audio en grafiek in de juiste staat
-function showView(id) {
+function urlFor(id) {
+    if (!(id in ROUTES)) return location.href;
+    return ROUTES[id] ? `#${ROUTES[id]}` : location.pathname + location.search;
+}
+
+function viewFromHash() {
+    const route = decodeURIComponent(location.hash.slice(1));
+    return Object.keys(ROUTES).find((id) => route && ROUTES[id] === route) ?? 'intro';
+}
+
+// Toont precies één view en zet tijdlijn, media, grafiek en geschiedenis in de juiste staat.
+// history: 'push' (nieuwe stap), 'replace' (huidige stap vervangen) of 'none' (bij terugknop)
+function showView(id, { history: mode = 'push' } = {}) {
     const target = document.getElementById(id);
     views.forEach((view) => { view.hidden = view !== target; });
 
     if (id !== 'intro') pauseIntroVideo();
+    if (id !== 'steenkool-video-overlay') stopSteenkoolVideo();
+    if (videoDialog.open) videoDialog.close();
     stopAllAudio();
+
+    loadPosters(target);
 
     const isStory = target.classList.contains('story');
     timeline.hidden = !isStory;
@@ -49,6 +75,10 @@ function showView(id) {
 
     if (id === 'story-migratie') initMigrantChart();
     else destroyCharts();
+
+    if (mode !== 'none') {
+        window.history[mode === 'replace' ? 'replaceState' : 'pushState']({ view: id }, '', urlFor(id));
+    }
 
     window.scrollTo({ top: 0, behavior: 'instant' });
     updateProgress();
@@ -101,12 +131,16 @@ function showSteenkoolVideo() {
     skipButtonTimeout = setTimeout(() => { skipBtn.hidden = false; }, 3000);
 }
 
-function skipSteenkoolVideo() {
+function stopSteenkoolVideo() {
     clearTimeout(skipButtonTimeout);
     steenkoolVideo.pause();
-    steenkoolVideo.currentTime = 0;
+    if (steenkoolVideo.currentTime > 0) steenkoolVideo.currentTime = 0;
     skipBtn.hidden = true;
-    showNavigator();
+}
+
+// Vervangt de video-stap in de geschiedenis: 'terug' vanaf de keuzepagina gaat dan naar de intro
+function skipSteenkoolVideo() {
+    showView('navigator', { history: 'replace' });
 }
 
 // ===========================================
@@ -147,6 +181,7 @@ function stopAllAudio() {
 // ===========================================
 
 function openVideoDialog() {
+    loadPosters(videoDialog);
     videoDialog.showModal();
     molenbergVideo.currentTime = 0;
     molenbergVideo.play().catch(() => {});
@@ -164,7 +199,7 @@ function updateProgress() {
 
     const scrollable = document.documentElement.scrollHeight - window.innerHeight;
     const scrolled = scrollable > 0 ? (window.scrollY / scrollable) * 100 : 0;
-    timelineFill.style.transform = `scaleY(${scrolled / 100})`;
+    timeline.style.setProperty('--progress', (scrolled / 100).toFixed(4));
 
     timelineMarkers.forEach((marker) => {
         marker.classList.toggle('is-active', scrolled >= marker.dataset.pos - 5);
@@ -272,6 +307,14 @@ async function initMigrantChart() {
 // INITIALISATIE
 // ===========================================
 
+// Posters pas ophalen als hun verhaal (of de popup) opent, niet al bij de eerste paginaload
+function loadPosters(root) {
+    root.querySelectorAll('video[data-poster]').forEach((video) => {
+        video.poster = video.dataset.poster;
+        delete video.dataset.poster;
+    });
+}
+
 // Story-video's laden pas (preload="none") en spelen alleen af als ze bijna in beeld zijn
 function initLazyVideos() {
     const observer = new IntersectionObserver((entries) => {
@@ -336,6 +379,18 @@ videoDialog.addEventListener('click', (event) => {
     if (event.target === videoDialog) videoDialog.close();
 });
 
+// Terugknop / swipe-terug van de telefoon: toon de view uit de geschiedenis
+window.addEventListener('popstate', (event) => {
+    const id = event.state?.view ?? viewFromHash();
+
+    if (id === 'steenkool-video-overlay') {
+        showView('navigator', { history: 'replace' });
+    } else {
+        showView(id, { history: 'none' });
+        if (id === 'intro') introVideo.play().catch(() => {});
+    }
+});
+
 window.addEventListener('scroll', () => {
     if (progressQueued) return;
     progressQueued = true;
@@ -347,6 +402,12 @@ views.forEach((view) => { view.tabIndex = -1; });
 
 initLazyVideos();
 initSectionAudio();
+
+// Directe link (bijv. .../#migratie) of herladen: meteen die view openen
+window.history.scrollRestoration = 'manual';
+const initialView = viewFromHash();
+if (initialView === 'intro') window.history.replaceState({ view: 'intro' }, '');
+else showView(initialView, { history: 'replace' });
 
 // Toon startknop na 5 seconden
 setTimeout(() => startBtn.classList.add('is-visible'), 5000);
