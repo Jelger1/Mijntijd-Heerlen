@@ -1,857 +1,511 @@
-
-/* Prehistory Theme - Rood */
-#story-prehistory .prehistory-home-btn img {
-    filter: brightness(0) saturate(100%) invert(40%) sepia(95%) saturate(1000%) hue-rotate(330deg) brightness(95%) contrast(95%);
-}
-
-body:has(#story-prehistory:not(.hidden-section)) #timeline-ui {
-    background: rgba(224, 74, 79, 0.2);
-}
-
-body:has(#story-prehistory:not(.hidden-section)) #timeline-ui .timeline-fill {
-    background: #e04a4f;
-}
-
-body:has(#story-prehistory:not(.hidden-section)) #timeline-ui .marker.active {
-    background: #e04a4f;
-    border-color: #e04a4f;
-    box-shadow: 0 0 20px #e04a4f;
-}
-
-body:has(#story-prehistory:not(.hidden-section)) .terug-tijd-titel {
-    color: #e04a4f;
-}
-
-/* Migratie Theme - Blauw */
-#story-migratie .migratie-home-btn img,
-.migratie-theme .migratie-home-btn img {
-    filter: brightness(0) saturate(100%) invert(60%) sepia(90%) saturate(500%) hue-rotate(165deg) brightness(100%) contrast(100%);
-}
-
-body:has(#story-migratie:not(.hidden-section)) #timeline-ui {
-    background: rgba(30, 177, 235, 0.2);
-}
-
-body:has(#story-migratie:not(.hidden-section)) #timeline-ui .timeline-fill {
-    background: #1eb1eb;
-}
-
-body:has(#story-migratie:not(.hidden-section)) #timeline-ui .marker.active {
-    background: #1eb1eb;
-    border-color: #1eb1eb;
-    box-shadow: 0 0 20px #1eb1eb;
-}
-
-body:has(#story-migratie:not(.hidden-section)) .terug-tijd-titel {
-    color: #1eb1eb;
-}
 /* ===========================================
    HEERLEN: DE STORY VAN HET ZWARTE GOUD
-   Main Stylesheet
+   Main Stylesheet — mobile-first
+
+   Breakpoints:  48em (768px)  tablet
+                 64em (1024px) desktop, 2 kolommen
+                 90em (1440px) wide
+                 120em (1920px) ultra-wide
    =========================================== */
 
-/* --- CSS Variables --- */
+/* --- Design tokens --- */
 :root {
-    --geel: #ffe652;
-    --zwart: #101010;
-    --grijs: #111111;
+    --color-bg: #101010;
+    --color-surface: #111111;
+    --color-text: #f1efee;
+    --color-border: #222222;
+    --color-line: #333333;
+
+    --font-display: 'Girdo Black', Impact, 'Arial Narrow Bold', sans-serif;
+    --font-body: 'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif;
+
+    /* Vloeiende koppen: 2.2rem op mobiel, groeit mee tot het maximum rond 1200px */
+    --fs-display: clamp(2.2rem, 0.96rem + 4.72vw, 4.5rem);
+    --fs-title: clamp(2.2rem, 1.37rem + 3.18vw, 3.75rem);
+    --fs-heading: clamp(2.2rem, 1.77rem + 1.64vw, 3rem);
+
+    --glow-near: 15px;
+    --glow-far: 60px;
+}
+
+/* --- Thema's: elk verhaal zet zijn eigen accentkleur ---
+   Mijncultuur gebruikt de standaardkleur (geel). */
+:root,
+[data-theme="cultuur"] {
+    --accent: #ffe652;
+    --accent-rgb: 255 230 82;
+    --accent-dark: #e6cf4a;
+}
+
+[data-theme="prehistory"] {
+    --accent: #e04a4f;
+    --accent-rgb: 224 74 79;
+    --accent-dark: #c43e43;
+}
+
+[data-theme="welvaart"] {
+    --accent: #2db45c;
+    --accent-rgb: 45 180 92;
+    --accent-dark: #259249;
+}
+
+[data-theme="migratie"] {
+    --accent: #1eb1eb;
+    --accent-rgb: 30 177 235;
+    --accent-dark: #189acc;
+}
+
+[data-theme="val"] {
+    --accent: #ef55ad;
+    --accent-rgb: 239 85 173;
+    --accent-dark: #d94a9a;
 }
 
 /* --- Custom Fonts --- */
 @font-face {
     font-family: 'Girdo Black';
-    src: url('../assets/Girdo Black.ttf') format('truetype');
+    src: url('../assets/Girdo-Black.woff2') format('woff2'),
+         url('../assets/Girdo Black.ttf') format('truetype');
     font-weight: normal;
     font-style: normal;
     font-display: swap;
 }
 
-/* --- Typography --- */
-/* Girdo Black */
-h1, h2, h3, .girdo-font {
-    font-family: 'Girdo Black', 'Anton', sans-serif;
+/* --- Reset & Base --- */
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
+html {
+    -webkit-text-size-adjust: 100%;
+    text-size-adjust: 100%;
+}
+
+body {
+    margin: 0;
+    background-color: var(--color-bg);
+    color: var(--color-text);
+    font-family: var(--font-body);
+    font-size: 1rem;
+    line-height: 1.45;
+    /* Vangnet; de layout zelf veroorzaakt geen horizontale overflow */
+    overflow-x: clip;
+}
+
+h1, h2, h3, p {
+    margin: 0;
+}
+
+h1, h2, h3 {
+    font-family: var(--font-display);
+    font-weight: normal;
     text-transform: uppercase;
-    line-height: 0.85;
+    line-height: 1;
     letter-spacing: -0.02em;
 }
 
-/* Circular Std Fallback */
-body, p, span, .circular-font {
-    font-family: 'Inter', sans-serif;
-    line-height: 1.45rem;
+img, video, canvas, svg {
+    display: block;
+    max-width: 100%;
 }
 
-p {
-    font-size: 1.0rem;
-    line-height: 1.45rem;
+img, video {
+    height: auto;
 }
 
-/* Override Tailwind text-xl */
-.text-xl {
-    font-size: 1.0rem !important;
-    line-height: 1.45rem !important;
+button {
+    font: inherit;
+    color: inherit;
+    background: none;
+    border: 0;
+    padding: 0;
+    cursor: pointer;
 }
 
-/* --- Base Styles --- */
-html {
-    scroll-behavior: smooth;
+[hidden] {
+    display: none !important;
 }
 
-/* Afstand en positionering voor Terug in de tijd blok */
-.terug-tijd-blok {
-    margin-top: 40px;
-    margin-bottom: 0;
-    padding-top: 24px;
-    border-top: none;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: flex-end;
-    width: 100%;
-}
-.terug-tijd-titel {
-    margin-bottom: 0px;
-    font-size: 1.1rem;
-    font-family: 'Girdo Black', 'Anton', sans-serif;
-    color: #e04a4f;
-    font-weight: 400;
-    letter-spacing: 0;
-    text-transform: none;
-    line-height: 1.3;
+:focus-visible {
+    outline: 3px solid var(--accent);
+    outline-offset: 4px;
 }
 
-
-body {
-    background-color: var(--zwart);
-    color: #f1efee;
-    overflow-x: hidden;
+/* Views krijgen focus bij navigeren (zie showView); die focus hoeft niet zichtbaar te zijn */
+[data-view]:focus {
+    outline: none;
 }
 
-/* Float Animation for button */
-@keyframes float {
-    0%, 100% {
-        transform: translateY(0);
-    }
-    50% {
-        transform: translateY(-10px);
+@media (prefers-reduced-motion: no-preference) {
+    html {
+        scroll-behavior: smooth;
     }
 }
 
-.animate-float {
-    animation: float 2s ease-in-out infinite;
-}
+/* ===========================================
+   VIEWS
+   =========================================== */
 
-.animate-float:hover {
-    animation-play-state: paused;
-}
-
-/* --- Intro Section Layout --- */
-.intro-section {
-    height: 100vh;
-    max-height: 100vh;
+/* --- Intro --- */
+.intro {
+    min-height: 100vh;
+    min-height: 100svh;
     overflow: hidden;
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 1vh 1rem !important;
+    padding: 1.5rem;
+    animation: fade-in 0.6s ease-out;
 }
 
-.intro-layout {
-    display: flex;
-    flex-direction: column;
-    gap: 0;
-    width: 100%;
-    max-height: 100%;
+.intro__inner {
+    width: min(100%, 56.25rem);
 }
 
-.intro-bottom {
-    display: flex;
-    flex-direction: column;
-    gap: 0;
-    align-items: center;
-    justify-content: center;
-    padding: 0.5rem 0;
-}
-
-@media (min-width: 768px) {
-    .intro-bottom {
-        flex-direction: row;
-        align-items: center;
-        justify-content: center;
-        gap: 0;
-        padding: 0.5rem 0;
-    }
-}
-
-.intro-quote {
-    font-size: 1rem;
-    font-style: italic;
-    color: #f1efee;
-    max-width: 700px;
-    line-height: 1.6;
-    text-align: left;
-}
-
-.intro-quote::before {
-    content: '"';
-    color: var(--geel);
-    font-size: 2rem;
-    font-weight: bold;
-    line-height: 0;
-    margin-right: 0.25rem;
-}
-
-@media (min-width: 768px) {
-    .intro-quote {
-        font-size: 1.15rem;
-    }
-}
-
-/* --- Video SVG Container --- */
-.video-svg-container {
+.intro__frame {
     position: relative;
     width: 80%;
-    max-width: 900px;
-    margin: 0 auto;
     max-height: 70vh;
-    filter: drop-shadow(0 0 15px var(--geel)) drop-shadow(0 0 60px rgba(255, 230, 82, 0.5));
+    margin-inline: auto;
+    filter: drop-shadow(0 0 var(--glow-near) var(--accent)) drop-shadow(0 0 var(--glow-far) rgb(var(--accent-rgb) / 0.5));
 }
 
-.video-frame {
-    display: none;
-}
-
-/* --- Steenkool Video Overlay --- */
-.steenkool-video-section {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
-    background: var(--zwart);
-    z-index: 9999;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.steenkool-video-section.hidden-section {
-    display: none;
-}
-
-.steenkool-video-container {
-    position: relative;
-    width: 90%;
-    max-width: 1000px;
-    /* Behoud aspect ratio van de SVG (1166 x 925) */
-    aspect-ratio: 1166 / 925;
-    max-height: 80vh;
-    filter: drop-shadow(0 0 15px var(--geel)) drop-shadow(0 0 60px rgba(255, 230, 82, 0.5));
-}
-
-.steenkool-video-masked {
+.intro__video {
     width: 100%;
-    height: 100%;
-    display: block;
-    object-fit: contain;
-    /* Gebruik de SVG als mask */
-    -webkit-mask-image: url('../assets/Intro-Video-Steenkool.svg');
-    mask-image: url('../assets/Intro-Video-Steenkool.svg');
-    -webkit-mask-size: 100% 100%;
-    mask-size: 100% 100%;
-    -webkit-mask-repeat: no-repeat;
-    mask-repeat: no-repeat;
-    -webkit-mask-position: center;
-    mask-position: center;
-}
-
-.skip-video-btn {
-    position: fixed;
-    bottom: 30px;
-    right: 30px;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    border: none;
-    background: transparent;
-    padding: 0;
-    z-index: 10000;
-}
-
-.skip-video-btn img {
-    width: 150px;
-    height: auto;
-    transition: all 0.3s ease;
-}
-
-.skip-video-btn:hover {
-    transform: scale(1.05);
-}
-
-.skip-video-btn:hover img {
-    filter: brightness(1.2);
-}
-
-.skip-video-btn.hidden {
-    display: none;
-}
-
-.skip-video-btn.fade-in {
-    animation: fadeInUp 0.5s ease forwards;
-}
-
-@keyframes fadeInUp {
-    from {
-        opacity: 0;
-        transform: translateY(20px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
-@media (max-width: 768px) {
-    .skip-video-btn {
-        bottom: 20px;
-        right: 20px;
-    }
-    
-    .skip-video-btn img {
-        width: 100px;
-    }
-}
-
-.intro-video-masked {
-    width: 100%;
-    height: auto;
     max-height: 85vh;
-    display: block;
     object-fit: cover;
     transform: scale(1.8);
     clip-path: polygon(
-        30.65% 32.23%, 
-        52.30% 24.73%, 
-        80.69% 32.85%, 
-        84.67% 50.92%, 
-        80.08% 67.47%, 
-        81.81% 75.28%, 
-        54.65% 68.08%, 
-        33.61% 75.28%, 
-        15.33% 67.77%, 
-        20.33% 56.28%, 
-        15.33% 34.53%, 
-        24.11% 24.73%, 
+        30.65% 32.23%,
+        52.30% 24.73%,
+        80.69% 32.85%,
+        84.67% 50.92%,
+        80.08% 67.47%,
+        81.81% 75.28%,
+        54.65% 68.08%,
+        33.61% 75.28%,
+        15.33% 67.77%,
+        20.33% 56.28%,
+        15.33% 34.53%,
+        24.11% 24.73%,
         30.65% 32.23%
     );
 }
 
-/* --- Video Container (legacy) --- */
-.video-container {
-    position: relative;
-    width: 100%;
+.intro__actions {
+    display: flex;
+    justify-content: center;
+    padding-block: 0.5rem;
+}
+
+.intro__start {
+    width: 13.75rem;
     max-width: 100%;
-    overflow: hidden;
-    background: var(--grijs);
-    border-left: 10px solid var(--geel);
-    clip-path: polygon(0 0, 100% 0, 100% 88%, 90% 100%, 0 100%);
-    padding: 1rem;
-    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 1s ease, visibility 0s linear 1s;
 }
 
-@media (min-width: 768px) {
-    .video-container {
-        padding: 1.25rem;
+.intro__start.is-visible {
+    opacity: 1;
+    visibility: visible;
+    transition: opacity 1s ease;
+}
+
+@media (min-width: 48em) {
+    .intro {
+        padding: 2.5rem;
     }
 }
 
-.video-container::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    right: 0;
-    width: 40px;
-    height: 40px;
-    background: var(--geel);
-    clip-path: polygon(100% 0, 0 0, 100% 100%);
-}
-
-@media (min-width: 768px) {
-    .video-container::before {
-        width: 50px;
-        height: 50px;
-    }
-}
-
-.video-container::after {
-    content: '';
-    position: absolute;
-    bottom: 0;
-    left: 50px;
-    right: 0;
-    height: 3px;
-    background: linear-gradient(90deg, var(--geel) 0%, transparent 100%);
-}
-
-.intro-video {
-    width: 100%;
-    height: auto;
-    display: block;
-    max-height: 55vh;
-    object-fit: cover;
-    border-radius: 2px;
-}
-
-/* --- Components --- */
-
-/* Steenkool hoekige vormen */
-.stone-card {
-    background: var(--grijs);
-    clip-path: polygon(0 0, 100% 0, 100% 88%, 90% 100%, 0 100%);
-    padding: 3rem;
-    position: relative;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
-}
-
-.btn-svg {
-    position: relative;
-    display: inline-block;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    border: none;
-    background: transparent;
-    padding: 0;
-}
-
-.btn-svg img {
-    width: 280px;
-    height: auto;
-    transition: all 0.3s ease;
-}
-
-.btn-svg span {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    font-weight: 900;
-    text-transform: uppercase;
-    color: var(--zwart);
-    font-size: 1rem;
-    white-space: nowrap;
-    pointer-events: none;
-}
-
-.btn-svg:hover {
-    transform: scale(1.05);
-}
-
-.btn-svg:hover img {
-    filter: brightness(1.2);
-}
-
-/* --- Simple SVG Buttons (voor navigator) --- */
-.btn-svg-simple {
-    display: inline-block;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    border: none;
-    background: transparent;
-    padding: 0;
-}
-
-.btn-svg-simple img {
-    width: 100%;
-    max-width: 400px;
-    height: auto;
-    transition: all 0.3s ease;
-}
-
-.btn-svg-simple:hover {
-    transform: scale(1.05);
-}
-
-.btn-svg-simple:hover img {
-    filter: brightness(1.2);
-}
-
-/* Roterende button hover effect */
-.btn-rotate {
-    transition: all 0.4s ease;
-    display: block;
-    margin: 0 auto;
-}
-
-.btn-rotate img {
-    width: 80px;
-    max-width: 5vw;
-    min-width: 60px;
-    height: auto;
-    transition: transform 0.4s ease;
-    margin-top: 50px;
-}
-
-.btn-rotate:hover {
-    transform: scale(1.05);
-}
-
-.btn-rotate:hover img {
-    transform: rotate(360deg);
-    filter: brightness(1.2);
-}
-
-/* Gekleurde glows voor thema knoppen */
-.btn-glow-green img {
-    filter: drop-shadow(0 0 12px rgba(45, 180, 92, 0.6));
-}
-.btn-glow-green:hover img {
-    filter: drop-shadow(0 0 24px rgba(45, 180, 92, 0.9)) brightness(1.15);
-}
-
-.btn-glow-blue img {
-    filter: drop-shadow(0 0 12px rgba(30, 177, 235, 0.6));
-}
-.btn-glow-blue:hover img {
-    filter: drop-shadow(0 0 24px rgba(30, 177, 235, 0.9)) brightness(1.15);
-}
-
-.btn-glow-yellow img {
-    filter: drop-shadow(0 0 12px rgba(255, 230, 82, 0.6));
-}
-.btn-glow-yellow:hover img {
-    filter: drop-shadow(0 0 24px rgba(255, 230, 82, 0.9)) brightness(1.15);
-}
-
-.btn-glow-red img {
-    filter: drop-shadow(0 0 12px rgba(224, 74, 79, 0.6));
-}
-.btn-glow-red:hover img {
-    filter: drop-shadow(0 0 24px rgba(224, 74, 79, 0.9)) brightness(1.15);
-}
-
-/* Start knop specifiek kleiner */
-#start-btn img {
-    max-width: 220px;
-}
-
-/* --- Navigation Icons --- */
-
-
-.btn-svg-nav:hover {
-    transform: scale(1.05);
-}
-
-.btn-svg-nav:hover .btn-bg {
-    filter: brightness(1.2);
-}
-
-/* --- Navigation Icons --- */
-.nav-icon {
-    width: 60px;
-    height: 60px;
-    margin-bottom: 1rem;
-    transition: all 0.3s ease;
-}
-
-.nav-icon-small {
-    width: 50px;
-    height: 50px;
-    margin-bottom: 0.75rem;
-    transition: all 0.3s ease;
-}
-
-.group:hover .nav-icon,
-.group:hover .nav-icon-small {
-    filter: brightness(0) saturate(100%) invert(36%) sepia(93%) saturate(1352%) hue-rotate(131deg) brightness(97%) contrast(101%);
-}
-
-@media (min-width: 768px) {
-    .nav-icon {
-        width: 80px;
-        height: 80px;
-    }
-    
-    .nav-icon-small {
-        width: 60px;
-        height: 60px;
-    }
-}
-
-
-/* --- Timeline --- */
-.timeline-rail {
+/* --- Steenkool Video Overlay --- */
+.steenkool {
     position: fixed;
-    left: 40px;
-    top: 0;
-    bottom: 0;
-    width: 2px;
-    background: rgba(255, 255, 255, 0.1);
-    z-index: 40;
+    inset: 0;
+    z-index: 9999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--color-bg);
 }
 
-.timeline-fill {
-    position: absolute;
-    top: 0;
-    left: 0;
+.steenkool__frame {
+    /* Breedte ook begrensd door de hoogte, zodat het masker (1166 x 925) nooit vervormt */
+    width: min(90%, 62.5rem, 80vh * 1166 / 925);
+    aspect-ratio: 1166 / 925;
+    filter: drop-shadow(0 0 var(--glow-near) var(--accent)) drop-shadow(0 0 var(--glow-far) rgb(var(--accent-rgb) / 0.5));
+}
+
+.steenkool__video {
     width: 100%;
-    background: var(--geel);
-    height: 0%;
-    transition: height 0.1s ease-out;
+    height: 100%;
+    object-fit: contain;
+    -webkit-mask: url('../assets/Intro-Video-Steenkool.svg') center / 100% 100% no-repeat;
+    mask: url('../assets/Intro-Video-Steenkool.svg') center / 100% 100% no-repeat;
 }
 
-.marker {
-    position: absolute;
-    left: -9px;
-    width: 20px;
-    height: 20px;
-    background: var(--zwart);
-    border: 3px solid #333;
-    transform: rotate(45deg);
-    transition: all 0.3s ease;
-    cursor: pointer;
+.steenkool__skip {
+    position: fixed;
+    right: 1.25rem;
+    bottom: 1.25rem;
+    z-index: 10000;
+    width: 6.25rem;
+    animation: fade-in 0.5s ease both;
 }
 
-.marker.active {
-    background: var(--geel);
-    border-color: var(--geel);
-    box-shadow: 0 0 20px var(--geel);
+@media (min-width: 48em) {
+    .steenkool__skip {
+        right: 1.875rem;
+        bottom: 1.875rem;
+        width: 9.375rem;
+    }
 }
 
-.marker:hover {
-    transform: rotate(45deg) scale(1.2);
-}
-
-/* --- Charts --- */
-.chart-container {
-    position: relative;
-    width: 100%;
-    max-width: 600px;
-    height: 250px;
-    margin: 2rem auto;
-}
-
-/* --- Sections --- */
-section {
+/* --- Thema Navigator (hub) --- */
+.hub {
     min-height: 100vh;
-    padding: 10vh 10% 10vh 120px;
-    border-bottom: 1px solid #222;
+    min-height: 100svh;
     display: flex;
     flex-direction: column;
-    justify-content: center;
-    animation: fadeIn 0.6s ease-out;
-}
-
-/* Content container voor tekst in sections */
-.section-content {
-    max-width: 800px;
-    width: 100%;
-}
-
-/* Paragraph styling met max-width */
-section p,
-.section-content p {
-    max-width: 700px;
-    font-size: 1rem;
-    line-height: 1.7;
-}
-
-/* --- Image Placeholder --- */
-.image-box {
-    background: #0a0a0a;
-    border: 1px dashed #333;
-    width: 100%;
-    height: 350px;
-    display: flex;
     align-items: center;
     justify-content: center;
-    color: #444;
-    font-size: 0.8rem;
-    margin: 2rem 0;
-    border-radius: 4px;
+    padding: 1.5rem 2.5rem 3rem;
+    text-align: center;
+    animation: fade-in 0.6s ease-out;
 }
 
-/* --- Utility Classes --- */
-.hidden-section {
-    display: none;
+.hub__title {
+    font-size: var(--fs-title);
+    margin-bottom: 2.5rem;
 }
 
-/* Navigator Hub - geen scroll */
-.navigator-hub {
-    height: 100vh;
-    overflow: hidden;
+.hub__back {
     display: flex;
     flex-direction: column;
-    justify-content: center;
     align-items: center;
+    width: 100%;
+    margin-top: 2.5rem;
+    padding-top: 1.5rem;
 }
 
-.navigator-hub.hidden-section {
-    display: none;
+.hub__question {
+    font-family: var(--font-display);
+    font-size: 1.1rem;
+    line-height: 1.3;
+    color: var(--accent);
 }
 
-/* --- Animations --- */
-@keyframes fadeIn {
-    from {
-        opacity: 0;
-        transform: translateY(20px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
+.hub__back-btn {
+    width: 100%;
+    max-width: 18.75rem;
+    animation: float 2s ease-in-out infinite;
 }
 
-/* --- Responsive Design --- */
+@media (min-width: 48em) {
+    .hub {
+        padding-bottom: 10vh;
+    }
 
-/* Kleine schermen (mobiel) */
-@media (max-width: 768px) {
-    .timeline-rail {
-        display: none;
-    }
-    
-    section {
-        padding: 6vh 5% !important;
-        min-height: auto;
-    }
-    
-    h2 {
-        font-size: 2.2rem !important;
-    }
-    
-    section p,
-    .section-content p {
-        font-size: 0.95rem;
-        line-height: 1.6;
-    }
-    
-    .chart-container {
-        height: 220px;
-        max-width: 100%;
+    .hub__title {
+        margin-bottom: 3.5rem;
     }
 }
 
-/* Tablet schermen */
-@media (min-width: 769px) and (max-width: 1024px) {
-    section {
-        padding: 8vh 8% 8vh 100px;
-    }
-    
-    section p,
-    .section-content p {
-        font-size: 1.05rem;
-    }
-    
-    h2 {
-        font-size: 3.5rem;
-    }
-}
-
-/* Grote schermen (desktop) */
-@media (min-width: 1025px) and (max-width: 1440px) {
-    section {
-        padding: 10vh 12% 10vh 140px;
-    }
-    
-    section p,
-    .section-content p {
-        font-size: 1.1rem;
-        max-width: 750px;
-    }
-    
-    h2 {
-        font-size: 4rem;
-    }
-}
-
-/* Extra grote schermen (wide monitors) */
-@media (min-width: 1441px) {
-    section {
-        padding: 10vh 15% 10vh 160px;
-    }
-    
-    section p,
-    .section-content p {
-        font-size: 1.2rem;
-        max-width: 850px;
-        line-height: 1.8;
-    }
-    
-    h2 {
-        font-size: 5rem;
-    }
-    
-    .chart-container {
-        max-width: 700px;
-        height: 300px;
-    }
-    
-    .video-2-container {
-        max-width: 1000px;
-    }
-}
-
-/* Ultra-wide schermen (2K+) */
-@media (min-width: 1921px) {
-    section {
-        padding: 10vh 20% 10vh 180px;
-    }
-    
-    section p,
-    .section-content p {
-        font-size: 1.35rem;
-        max-width: 950px;
-    }
-    
-    h2 {
-        font-size: 6rem;
-    }
-    
-    .terug-tijd-titel {
+@media (min-width: 120em) {
+    .hub__question {
         font-size: 1.3rem;
     }
 }
 
-/* --- Video 2 Container (Molenberg popup) --- */
-.video-2-container {
+/* --- Story & Chapters --- */
+.story__home {
+    position: fixed;
+    top: 1rem;
+    right: 1rem;
+    z-index: 50;
+    display: grid;
+    place-items: center;
+    width: 3rem;
+    height: 3rem;
+    color: var(--accent);
+    transition: opacity 0.15s ease;
+}
+
+.story__home-icon {
+    width: 2rem;
+    height: 2rem;
+    fill: currentColor;
+}
+
+.chapter {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 6vh 5%;
+    border-bottom: 1px solid var(--color-border);
+    animation: fade-in 0.6s ease-out;
+}
+
+.chapter__date {
+    font-family: var(--font-display);
+    font-size: 2.25rem;
+    line-height: 2.5rem;
+    letter-spacing: -0.02em;
+    text-transform: uppercase;
+    color: var(--accent);
+}
+
+.chapter__title {
+    font-size: var(--fs-display);
+    margin-bottom: 1.5rem;
+}
+
+.chapter__grid {
+    display: grid;
+    gap: 3rem;
+    align-items: center;
+}
+
+.chapter__text {
+    max-width: 43.75rem;
+}
+
+/* Ruimte links voor de tijdlijn */
+@media (min-width: 48em) {
+    .chapter {
+        min-height: 100vh;
+        padding: 8vh 8% 8vh 6.25rem;
+    }
+}
+
+@media (min-width: 64em) {
+    .chapter {
+        padding: 10vh 12% 10vh 8.75rem;
+    }
+
+    .chapter__grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .chapter__text {
+        max-width: 46.875rem;
+    }
+}
+
+@media (min-width: 90em) {
+    .chapter {
+        padding: 10vh 15% 10vh 10rem;
+    }
+
+    .chapter__text {
+        max-width: 53.125rem;
+    }
+}
+
+@media (min-width: 120em) {
+    .chapter {
+        padding: 10vh 20% 10vh 11.25rem;
+    }
+
+    .chapter__text {
+        max-width: 59.375rem;
+    }
+}
+
+/* --- Outro ("Verken andere verhalen") --- */
+.outro {
+    text-align: center;
+}
+
+.outro__title {
+    font-size: var(--fs-heading);
+    margin-bottom: 2.5rem;
+}
+
+.outro__finish {
+    display: block;
+    width: 100%;
+    max-width: 18.75rem;
+    margin: 3rem auto 0;
+}
+
+.outro__home {
+    display: block;
+    width: clamp(3.75rem, 5vw, 5rem);
+    margin: 6rem auto 0;
+}
+
+.outro__home img {
+    transition: transform 0.4s ease, filter 0.4s ease;
+}
+
+/* ===========================================
+   COMPONENTS
+   =========================================== */
+
+/* --- Afbeeldingsknoppen (SVG-knoppen) --- */
+.img-btn {
+    display: inline-block;
+    transition: transform 0.3s ease;
+}
+
+.img-btn img {
+    width: 100%;
+    transition: filter 0.3s ease;
+}
+
+/* --- Thema-knoppen met gekleurde glow --- */
+.theme-grid {
+    display: grid;
+    justify-items: center;
+    gap: 1.5rem;
+    width: 100%;
+    max-width: 61.25rem;
+    margin-inline: auto;
+}
+
+.theme-grid--duo {
+    max-width: 48rem;
+}
+
+.theme-btn {
+    width: 100%;
+    max-width: 18.75rem;
+}
+
+.theme-btn img {
+    filter: drop-shadow(0 0 12px rgb(var(--accent-rgb) / 0.6));
+}
+
+@media (min-width: 48em) {
+    .theme-grid {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 2.5rem;
+    }
+
+    .theme-grid--duo {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 2rem;
+    }
+}
+
+/* --- Media frame (afbeelding/video met clipmask en glow) --- */
+.media-frame {
     position: relative;
     width: 100%;
-    max-width: 800px;
-    margin: 0 auto;
-    filter: drop-shadow(0 0 15px var(--geel)) drop-shadow(0 0 60px rgba(255, 230, 82, 0.5));
+    max-width: 31.25rem;
+    margin-inline: auto;
+    filter: drop-shadow(0 0 var(--glow-near) var(--accent)) drop-shadow(0 0 var(--glow-far) rgb(var(--accent-rgb) / 0.5));
 }
 
-/* Migratie Theme - Blauwe glow voor video's */
-#story-migratie .video-2-container,
-.migratie-theme .video-2-container {
-    filter: drop-shadow(0 0 15px #1eb1eb) drop-shadow(0 0 60px rgba(30, 177, 235, 0.5));
+.media-frame--narrow {
+    max-width: 25rem;
 }
 
-/* Prehistory Theme - Rode glow voor video's */
-#story-prehistory .video-2-container,
-.prehistory-theme .video-2-container {
-    filter: drop-shadow(0 0 15px #e04a4f) drop-shadow(0 0 60px rgba(224, 74, 79, 0.5));
-}
-
-/* Welvaart Theme - Groene glow voor video's */
-#story-welvaart .video-2-container,
-.welvaart-theme .video-2-container {
-    filter: drop-shadow(0 0 15px #2db45c) drop-shadow(0 0 60px rgba(45, 180, 92, 0.5));
-}
-
-/* Val Theme - Roze glow voor video's */
-#story-val .video-2-container,
-.val-theme .video-2-container {
-    filter: drop-shadow(0 0 15px #ef55ad) drop-shadow(0 0 60px rgba(239, 85, 173, 0.5));
-}
-
-.video-2-masked {
+.media-frame__media {
     width: 100%;
-    height: auto;
-    display: block;
     object-fit: cover;
     clip-path: polygon(
         77.14% 81.76%,
@@ -870,8 +524,7 @@ section p,
     );
 }
 
-/* Clipmask variatie 1 */
-.video-2-masked.mask-1 {
+.media-frame__media--mask-1 {
     clip-path: polygon(
         86.31% 3.26%,
         98.62% 21.39%,
@@ -889,8 +542,7 @@ section p,
     );
 }
 
-/* Clipmask variatie 2 */
-.video-2-masked.mask-2 {
+.media-frame__media--mask-2 {
     clip-path: polygon(
         86.31% 3.26%,
         98.62% 21.39%,
@@ -909,8 +561,7 @@ section p,
     );
 }
 
-/* Clipmask variatie 3 */
-.video-2-masked.mask-3 {
+.media-frame__media--mask-3 {
     clip-path: polygon(
         6.02% 25.55%,
         27.06% 12.01%,
@@ -927,8 +578,7 @@ section p,
     );
 }
 
-/* Clipmask variatie 4 */
-.video-2-masked.mask-4 {
+.media-frame__media--mask-4 {
     clip-path: polygon(
         8% 5%,
         35% 12%,
@@ -947,8 +597,8 @@ section p,
     );
 }
 
-/* Portrait clipmask voor hoge afbeeldingen */
-.video-2-masked.mask-portrait {
+/* Voor hoge (portret) afbeeldingen */
+.media-frame__media--portrait {
     clip-path: polygon(
         5% 3%,
         40% 8%,
@@ -968,303 +618,355 @@ section p,
     );
 }
 
-/* --- Custom Audio Player --- */
-.audio-player-container {
-    background: transparent;
-    border: 2px solid var(--grijs);
-    padding: 1.5rem;
-    clip-path: polygon(0 0, 100% 0, 100% 85%, 95% 100%, 0 100%);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 1rem;
+/* --- Tabellen (hoekig/steen-achtig) --- */
+.data-table {
+    max-width: 100%;
+    padding: 0.75rem 0.5rem;
+    background: var(--color-surface);
+    /* Smalle schermen: tabel scrolt binnen het kader i.p.v. de pagina te verbreden */
+    overflow-x: auto;
 }
 
-.audio-player-title {
-    font-family: 'Girdo Black', 'Anton', sans-serif;
-    font-size: 1.2rem;
-    color: #ffe652;
-    text-transform: uppercase;
-    text-align: center;
-}
-
-.audio-play-btn {
-    background: transparent;
-    border: none;
-    cursor: pointer;
-    padding: 0;
-    transition: transform 0.3s ease;
-}
-
-.audio-play-btn:hover {
-    transform: scale(1.1);
-}
-
-.audio-play-btn .play-icon {
-    width: 80px;
-    height: 80px;
-    display: block;
-}
-
-/* Kleine audio play knop - voor bij afbeeldingen/video's */
-.audio-play-btn-small {
-    position: absolute;
-    bottom: 12px;
-    right: 12px;
-    background: transparent;
-    border: none;
-    cursor: pointer;
-    padding: 0;
-    transition: all 0.3s ease;
-    z-index: 10;
-}
-
-.audio-play-btn-small:hover {
-    transform: scale(1.15);
-}
-
-.audio-play-btn-small .play-icon {
-    width: 36px;
-    height: 36px;
-    display: block;
-}
-
-/* Val Theme - Roze audio player */
-.audio-player-val .audio-player-title {
-    color: #ef55ad;
-}
-
-.audio-player-val .custom-audio-player::-webkit-media-controls-panel {
-    background: linear-gradient(90deg, rgba(239, 85, 173, 0.2), rgba(239, 85, 173, 0.1));
-}
-
-.audio-player-val .custom-audio-player::-webkit-media-controls-timeline {
-    filter: sepia(1) hue-rotate(280deg) saturate(3);
-}
-
-.audio-player-val .custom-audio-player::-webkit-media-controls-current-time-display,
-.audio-player-val .custom-audio-player::-webkit-media-controls-time-remaining-display {
-    color: #ef55ad;
-}
-
-.audio-player-val .custom-audio-player::-webkit-media-controls-volume-slider {
-    filter: sepia(1) hue-rotate(280deg) saturate(3);
-}
-
-/* --- Mine Table Styling (Hoekig/Steen-achtig) --- */
-.mine-table-container {
-    background: var(--grijs);
-    padding: 1rem;
-    position: relative;
-}
-
-/* Welvaart Theme - Groen */
-.welvaart-theme .timeline-fill {
-    background: #2db45c;
-}
-
-.welvaart-theme .marker.active {
-    background: #2db45c;
-    border-color: #2db45c;
-    box-shadow: 0 0 20px #2db45c;
-}
-
-.welvaart-theme ~ #timeline-ui .timeline-fill,
-#story-welvaart.welvaart-theme ~ #timeline-ui .timeline-fill {
-    background: #2db45c;
-}
-
-/* Groene home knop voor Welvaart */
-.welvaart-home-btn img {
-    filter: brightness(0) saturate(100%) invert(55%) sepia(90%) saturate(400%) hue-rotate(100deg) brightness(95%) contrast(100%);
-}
-
-/* Groene timeline rail wanneer Welvaart actief is */
-body:has(#story-welvaart:not(.hidden-section)) #timeline-ui {
-    background: rgba(45, 180, 92, 0.2);
-}
-
-body:has(#story-welvaart:not(.hidden-section)) #timeline-ui .timeline-fill {
-    background: #2db45c;
-}
-
-body:has(#story-welvaart:not(.hidden-section)) #timeline-ui .marker.active {
-    background: #2db45c;
-    border-color: #2db45c;
-    box-shadow: 0 0 20px #2db45c;
-}
-
-body:has(#story-welvaart:not(.hidden-section)) .terug-tijd-titel {
-    color: #2db45c;
-}
-
-/* Val/Sluiting Theme - Roze */
-.val-home-btn img {
-    filter: brightness(0) saturate(100%) invert(55%) sepia(90%) saturate(500%) hue-rotate(300deg) brightness(95%) contrast(100%);
-}
-
-body:has(#story-val:not(.hidden-section)) #timeline-ui {
-    background: rgba(239, 85, 173, 0.2);
-}
-
-body:has(#story-val:not(.hidden-section)) #timeline-ui .timeline-fill {
-    background: #ef55ad;
-}
-
-body:has(#story-val:not(.hidden-section)) #timeline-ui .marker.active {
-    background: #ef55ad;
-    border-color: #ef55ad;
-    box-shadow: 0 0 20px #ef55ad;
-}
-
-body:has(#story-val:not(.hidden-section)) .terug-tijd-titel {
-    color: #ef55ad;
-}
-
-.mine-table-welvaart .mine-table thead {
-    background: linear-gradient(90deg, #2db45c, #259249);
-}
-
-.mine-table-welvaart .badge-staats {
-    background: #2db45c;
-}
-
-.mine-table-welvaart tbody tr.row-staats {
-    background: rgba(45, 180, 92, 0.05);
-}
-
-.mine-table-welvaart tbody tr.row-staats:hover {
-    background: rgba(45, 180, 92, 0.15);
-}
-
-.mine-table-welvaart tbody tr:hover {
-    background: rgba(45, 180, 92, 0.1);
-}
-
-/* Val Theme - Roze tabel styling */
-.mine-table-val .mine-table thead {
-    background: linear-gradient(90deg, #ef55ad, #d94a9a);
-}
-
-.mine-table-val tbody tr:hover {
-    background: rgba(239, 85, 173, 0.1);
-}
-
-.mine-table-val h3 {
-    color: #ef55ad;
-}
-
-.mine-table {
+.data-table table {
     width: 100%;
     border-collapse: collapse;
 }
 
-.mine-table thead {
-    background: linear-gradient(90deg, #ffe652, #e6cf4a);
-}
-
-.mine-table th {
-    color: var(--zwart);
-    font-weight: 900;
-    text-transform: uppercase;
-    padding: 0.4rem 0.4rem;
+.data-table__caption {
+    padding-bottom: 0.75rem;
+    font-family: var(--font-display);
+    letter-spacing: -0.02em;
     text-align: left;
-    font-size: 0.6rem;
-    letter-spacing: 0.01em;
-    border-bottom: 2px solid var(--zwart);
-}
-
-.mine-table td {
-    padding: 0.4rem 0.4rem;
-    border-bottom: 1px solid #333;
-    color: #e0e0e0;
-    vertical-align: middle;
-    font-size: 0.7rem;
-}
-
-.mine-table tbody tr {
-    transition: all 0.2s ease;
-}
-
-.mine-table tbody tr:hover {
-    background: rgba(255, 230, 82, 0.1);
-}
-
-.mine-table tbody tr.row-staats {
-    background: rgba(255, 230, 82, 0.05);
-}
-
-.mine-table tbody tr.row-staats:hover {
-    background: rgba(255, 230, 82, 0.15);
-}
-
-.mine-table tbody tr.row-special td {
-    font-style: italic;
-    color: #999;
-}
-
-/* Badges voor Eigendom */
-.badge-privaat,
-.badge-staats {
-    display: inline-block;
-    padding: 0.2rem 0.5rem;
-    font-size: 0.7rem;
-    font-weight: 700;
     text-transform: uppercase;
+    color: var(--accent);
+}
+
+.data-table thead {
+    background: linear-gradient(90deg, var(--accent), var(--accent-dark));
+}
+
+.data-table th {
+    padding: 0.5rem 0.25rem;
+    border-bottom: 2px solid var(--color-bg);
+    color: var(--color-bg);
+    font-size: 0.6875rem;
+    font-weight: 900;
+    letter-spacing: 0.01em;
+    text-align: left;
+    text-transform: uppercase;
+}
+
+.data-table td {
+    padding: 0.5rem 0.25rem;
+    border-bottom: 1px solid var(--color-line);
+    color: #e0e0e0;
+    font-size: 0.75rem;
+    vertical-align: middle;
+}
+
+.data-table tbody tr {
+    transition: background-color 0.2s ease;
+}
+
+.data-table__row--highlight {
+    background: rgb(var(--accent-rgb) / 0.05);
+}
+
+.data-table__accent {
+    color: var(--accent);
+}
+
+@media (min-width: 48em) {
+    .data-table {
+        padding: 1rem;
+    }
+
+    .data-table th,
+    .data-table td {
+        padding: 0.4rem;
+    }
+}
+
+@media (min-width: 90em) {
+    .data-table {
+        max-width: 56.25rem;
+    }
+
+    .data-table th {
+        padding: 0.6rem 0.5rem;
+        font-size: 0.75rem;
+    }
+
+    .data-table td {
+        padding: 0.6rem 0.5rem;
+        font-size: 0.85rem;
+    }
+}
+
+/* Badges voor eigendom */
+.badge {
+    display: inline-block;
+    padding: 0.2rem 0.4rem;
+    font-size: 0.65rem;
+    font-weight: 700;
     letter-spacing: 0.03em;
+    text-transform: uppercase;
     clip-path: polygon(0 0, 100% 0, 95% 50%, 100% 100%, 0 100%, 5% 50%);
 }
 
-.badge-privaat {
-    background: #444;
-    color: #f1efee;
-}
-
-.badge-staats {
-    background: var(--geel);
-    color: var(--zwart);
-}
-
-.table-footnote {
-    margin-top: 1rem;
-    font-size: 0.75rem;
-    color: #888;
-    font-style: italic;
-}
-
-.table-footnote sup {
-    color: var(--geel);
-}
-
-/* Responsive table */
-@media (max-width: 768px) {
-    .mine-table-container {
-        padding: 1rem;
-    }
-    
-    .mine-table {
-        font-size: 0.75rem;
-    }
-    
-    .mine-table th,
-    .mine-table td {
-        padding: 0.5rem 0.3rem;
+@media (min-width: 48em) {
+    .badge {
+        padding: 0.2rem 0.5rem;
+        font-size: 0.7rem;
     }
 }
 
-/* Responsive table voor grote schermen */
-@media (min-width: 1441px) {
-    .mine-table-container {
-        max-width: 900px;
+.badge--privaat {
+    background: #444444;
+    color: var(--color-text);
+}
+
+.badge--staats {
+    background: var(--accent);
+    color: var(--color-bg);
+}
+
+/* --- Audio --- */
+.audio-player {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+    padding: 1.5rem;
+    border: 2px solid var(--color-surface);
+    clip-path: polygon(0 0, 100% 0, 100% 85%, 95% 100%, 0 100%);
+}
+
+.audio-player__title {
+    font-size: 1.2rem;
+    line-height: 1.2;
+    letter-spacing: normal;
+    text-align: center;
+    color: var(--accent);
+}
+
+.audio-btn {
+    transition: transform 0.3s ease;
+}
+
+.audio-btn img {
+    width: 5rem;
+    height: 5rem;
+}
+
+/* Kleine knop over een afbeelding/video: icoon 2.25rem, raakvlak 3rem */
+.audio-btn--overlay {
+    position: absolute;
+    right: 0.375rem;
+    bottom: 0.375rem;
+    z-index: 10;
+    padding: 0.375rem;
+}
+
+.audio-btn--overlay img {
+    width: 2.25rem;
+    height: 2.25rem;
+}
+
+/* --- Grafiek --- */
+.chart {
+    position: relative;
+    width: 100%;
+    max-width: 37.5rem;
+    height: 13.75rem;
+    margin: 2rem auto;
+}
+
+@media (min-width: 48em) {
+    .chart {
+        height: 15.625rem;
     }
-    
-    .mine-table th {
-        font-size: 0.75rem;
-        padding: 0.6rem 0.5rem;
+}
+
+@media (min-width: 90em) {
+    .chart {
+        max-width: 43.75rem;
+        height: 18.75rem;
     }
-    
-    .mine-table td {
-        font-size: 0.85rem;
-        padding: 0.6rem 0.5rem;
+}
+
+/* --- Tekstlink (opent de Molenberg-video) --- */
+.text-link {
+    position: relative;
+    color: var(--accent);
+    text-decoration: underline;
+    transition: color 0.3s ease;
+}
+
+/* Vergroot het raakvlak tot 3rem hoog zonder de regelhoogte te veranderen */
+.text-link::after {
+    content: '';
+    position: absolute;
+    inset: -0.75rem -0.25rem;
+}
+
+/* --- Tijdlijn (scrollvoortgang) --- */
+.timeline {
+    display: none;
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 2.5rem;
+    z-index: 40;
+    width: 2px;
+    background: rgb(var(--accent-rgb) / 0.2);
+}
+
+.timeline__fill {
+    position: absolute;
+    inset: 0;
+    background: var(--accent);
+    transform: scaleY(0);
+    transform-origin: top;
+    transition: transform 0.1s ease-out;
+}
+
+.timeline__marker {
+    position: absolute;
+    left: -0.5625rem;
+    width: 1.25rem;
+    height: 1.25rem;
+    background: var(--color-bg);
+    border: 3px solid var(--color-line);
+    transform: rotate(45deg);
+    transition: background-color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.timeline__marker.is-active {
+    background: var(--accent);
+    border-color: var(--accent);
+    box-shadow: 0 0 20px var(--accent);
+}
+
+@media (min-width: 48em) {
+    .timeline {
+        display: block;
+    }
+}
+
+/* --- Video popup --- */
+.video-dialog {
+    width: min(100% - 2rem, 56rem);
+    max-width: none;
+    max-height: none;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    color: inherit;
+    overflow: visible;
+}
+
+.video-dialog::backdrop {
+    background: rgb(0 0 0 / 0.9);
+}
+
+.video-dialog__close {
+    position: absolute;
+    top: -3.5rem;
+    right: 0;
+    display: grid;
+    place-items: center;
+    width: 3rem;
+    height: 3rem;
+    transition: opacity 0.15s ease;
+}
+
+.video-dialog__close img {
+    width: 2rem;
+}
+
+.video-dialog__frame {
+    max-width: 50rem;
+}
+
+/* --- Hover-effecten alleen op apparaten met een muis (voorkomt "plakkende" hover op touch) --- */
+@media (hover: hover) {
+    .img-btn:hover {
+        transform: scale(1.05);
+    }
+
+    .img-btn:hover img {
+        filter: brightness(1.2);
+    }
+
+    .theme-btn:hover img {
+        filter: drop-shadow(0 0 24px rgb(var(--accent-rgb) / 0.9)) brightness(1.15);
+    }
+
+    .hub__back-btn:hover {
+        animation-play-state: paused;
+    }
+
+    .outro__home:hover img {
+        transform: rotate(360deg);
+    }
+
+    .story__home:hover,
+    .video-dialog__close:hover {
+        opacity: 0.8;
+    }
+
+    .audio-btn:hover {
+        transform: scale(1.1);
+    }
+
+    .audio-btn--overlay:hover {
+        transform: scale(1.15);
+    }
+
+    .text-link:hover {
+        color: #ffffff;
+    }
+
+    .data-table tbody tr:hover {
+        background: rgb(var(--accent-rgb) / 0.1);
+    }
+
+    .data-table tbody .data-table__row--highlight:hover {
+        background: rgb(var(--accent-rgb) / 0.15);
+    }
+}
+
+/* ===========================================
+   ANIMATIONS
+   =========================================== */
+
+@keyframes fade-in {
+    from {
+        opacity: 0;
+        transform: translateY(1.25rem);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes float {
+    0%, 100% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-0.625rem);
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
     }
 }

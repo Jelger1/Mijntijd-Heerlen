@@ -1,495 +1,352 @@
 /* ===========================================
    HEERLEN: DE STORY VAN HET ZWARTE GOUD
-   Main JavaScript
+   Main JavaScript (geladen met defer: de DOM is al beschikbaar)
    =========================================== */
 
-// --- CHART INSTANCES (voor cleanup) ---
-let chartInstances = {};
+// --- DOM REFERENTIES ---
+const views = document.querySelectorAll('[data-view]');
+const introVideo = document.getElementById('intro-video');
+const startBtn = document.getElementById('start-btn');
+const steenkoolVideo = document.getElementById('steenkool-video');
+const skipBtn = document.getElementById('skip-video-btn');
+const timeline = document.getElementById('timeline-ui');
+const timelineFill = timeline.querySelector('.timeline__fill');
+const timelineMarkers = timeline.querySelectorAll('.timeline__marker');
+const audioButtons = document.querySelectorAll('[data-action="audio"]');
+const videoDialog = document.getElementById('video-dialog');
+const molenbergVideo = document.getElementById('molenberg-video');
+
+const AUDIO_ICONS = {
+    default: { play: 'assets/play-sound.svg', pause: 'assets/pauze-sound.svg' },
+    overlay: { play: 'assets/play-sound-yellow.svg', pause: 'assets/pauze-sound-yellow.svg' },
+};
+
+// Chart.js + datalabels: pas laden als de grafiek echt nodig is
+const CHART_SCRIPTS = [
+    'https://cdn.jsdelivr.net/npm/chart.js@4.6.1/dist/chart.umd.min.js',
+    'https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.2.0/dist/chartjs-plugin-datalabels.min.js',
+];
+
+let skipButtonTimeout = null;
+let migrantChart = null;
+let chartLibrary = null;
 
 // ===========================================
 // NAVIGATION LOGIC
 // ===========================================
 
-// Intro video beheer
-function pauseIntroVideo() {
-    const introVideo = document.getElementById('intro-video');
-    if (introVideo) {
-        introVideo.pause();
-        introVideo.muted = true;
-    }
-}
+// Toont precies één view en zet tijdlijn, audio en grafiek in de juiste staat
+function showView(id) {
+    const target = document.getElementById(id);
+    views.forEach((view) => { view.hidden = view !== target; });
 
-function playIntroVideo() {
-    const introVideo = document.getElementById('intro-video');
-    if (introVideo) {
-        introVideo.muted = false;
-        introVideo.play();
-    }
-}
+    if (id !== 'intro') pauseIntroVideo();
+    stopAllAudio();
 
-// Unmute intro video bij eerste klik op de pagina
-document.addEventListener('click', function unmuteIntro() {
-    const introVideo = document.getElementById('intro-video');
-    if (introVideo && !document.getElementById('intro').classList.contains('hidden-section')) {
-        introVideo.muted = false;
-    }
-}, { once: true });
+    const isStory = target.classList.contains('story');
+    timeline.hidden = !isStory;
+    if (isStory) timeline.dataset.theme = target.dataset.theme;
+
+    if (id === 'story-migratie') initMigrantChart();
+    else destroyCharts();
+
+    window.scrollTo({ top: 0, behavior: 'instant' });
+    updateProgress();
+
+    // Focus mee verplaatsen, anders blijft die achter op een knop die nu verborgen is
+    target.focus({ preventScroll: true });
+}
 
 function showNavigator() {
-    pauseIntroVideo();
-    document.getElementById('intro').classList.add('hidden-section');
-    document.getElementById('steenkool-video-overlay').classList.add('hidden-section');
-    document.getElementById('navigator').classList.remove('hidden-section');
-    window.scrollTo({ top: 0, behavior: 'instant' });
+    showView('navigator');
 }
 
-// Steenkool Video functies
-let skipButtonTimeout = null;
-
-function showSteenkoolVideo() {
-    // Stop intro video audio
-    pauseIntroVideo();
-    
-    document.getElementById('intro').classList.add('hidden-section');
-    document.getElementById('steenkool-video-overlay').classList.remove('hidden-section');
-    
-    const video = document.getElementById('steenkool-video');
-    const skipBtn = document.getElementById('skip-video-btn');
-    
-    // Reset video en skip button
-    video.currentTime = 0;
-    skipBtn.classList.add('hidden');
-    skipBtn.classList.remove('fade-in');
-    
-    // Start video
-    video.play();
-    
-    // Toon skip button na 3 seconden
-    skipButtonTimeout = setTimeout(() => {
-        skipBtn.classList.remove('hidden');
-        skipBtn.classList.add('fade-in');
-    }, 3000);
-    
-    // Ga automatisch naar navigator als video klaar is
-    video.onended = function() {
-        skipSteenkoolVideo();
-    };
-}
-
-function skipSteenkoolVideo() {
-    const video = document.getElementById('steenkool-video');
-    const skipBtn = document.getElementById('skip-video-btn');
-    
-    // Clear timeout als die nog loopt
-    if (skipButtonTimeout) {
-        clearTimeout(skipButtonTimeout);
-        skipButtonTimeout = null;
-    }
-    
-    // Stop video
-    video.pause();
-    video.currentTime = 0;
-    
-    // Verberg skip button
-    skipBtn.classList.add('hidden');
-    skipBtn.classList.remove('fade-in');
-    
-    // Ga naar navigator
-    showNavigator();
-}
-
-// Pre-History functies
 function showPreHistory() {
-    document.getElementById('navigator').classList.add('hidden-section');
-    document.getElementById('story-prehistory').classList.remove('hidden-section');
-    document.getElementById('timeline-ui').classList.remove('hidden');
-    window.scrollTo({ top: 0, behavior: 'instant' });
-}
-
-function closePreHistory() {
-    document.getElementById('story-prehistory').classList.add('hidden-section');
-    document.getElementById('timeline-ui').classList.add('hidden');
-    document.getElementById('navigator').classList.remove('hidden-section');
-    window.scrollTo({ top: 0, behavior: 'instant' });
+    showView('story-prehistory');
 }
 
 function startStory(id) {
-    // Verberg alle story secties eerst
-    document.querySelectorAll('[id^="story-"]').forEach(el => el.classList.add('hidden-section'));
-    document.getElementById('navigator').classList.add('hidden-section');
-    document.getElementById('story-' + id).classList.remove('hidden-section');
-    document.getElementById('timeline-ui').classList.remove('hidden');
-    window.scrollTo({ top: 0, behavior: 'instant' });
-    
-    // Wacht even tot DOM geupdate is, dan charts initialiseren
-    setTimeout(() => initCharts(), 100);
+    showView(`story-${id}`);
 }
 
 function finishStory() {
-    document.querySelectorAll('[id^="story-"]').forEach(el => el.classList.add('hidden-section'));
-    document.getElementById('story-val').classList.remove('hidden-section');
-    document.getElementById('timeline-ui').classList.remove('hidden');
-    window.scrollTo({ top: 0, behavior: 'instant' });
-}
-
-function backToNavigator() {
-    // Destroy alle charts bij teruggaan
-    destroyCharts();
-    document.querySelectorAll('[id^="story-"]').forEach(el => el.classList.add('hidden-section'));
-    document.getElementById('timeline-ui').classList.add('hidden');
-    document.getElementById('navigator').classList.remove('hidden-section');
-    window.scrollTo({ top: 0, behavior: 'instant' });
+    showView('story-val');
 }
 
 function backToIntro() {
-    // Destroy alle charts bij teruggaan naar intro
-    destroyCharts();
-    document.querySelectorAll('[id^="story-"]').forEach(el => el.classList.add('hidden-section'));
-    document.getElementById('timeline-ui').classList.add('hidden');
-    document.getElementById('navigator').classList.add('hidden-section');
-    document.getElementById('steenkool-video-overlay').classList.add('hidden-section');
-    document.getElementById('intro').classList.remove('hidden-section');
+    showView('intro');
     playIntroVideo();
-    window.scrollTo({ top: 0, behavior: 'instant' });
+}
+
+// Intro video beheer
+function pauseIntroVideo() {
+    introVideo.pause();
+    introVideo.muted = true;
+}
+
+function playIntroVideo() {
+    introVideo.muted = false;
+    introVideo.play().catch(() => {});
+}
+
+// Steenkool Video functies
+function showSteenkoolVideo() {
+    showView('steenkool-video-overlay');
+
+    skipBtn.hidden = true;
+    steenkoolVideo.currentTime = 0;
+    steenkoolVideo.play().catch(() => {});
+
+    // Toon skip button na 3 seconden
+    skipButtonTimeout = setTimeout(() => { skipBtn.hidden = false; }, 3000);
+}
+
+function skipSteenkoolVideo() {
+    clearTimeout(skipButtonTimeout);
+    steenkoolVideo.pause();
+    steenkoolVideo.currentTime = 0;
+    skipBtn.hidden = true;
+    showNavigator();
 }
 
 // ===========================================
 // AUDIO PLAYER
 // ===========================================
 
-function toggleAudio(audioId, btnId) {
-    const audio = document.getElementById(audioId);
-    const btn = document.getElementById(btnId);
-    const playIcon = btn.querySelector('.play-icon');
-    
-    // Bepaal of het een kleine knop is (gele versie) of grote knop
-    const isSmallBtn = btn.classList.contains('audio-play-btn-small');
-    const playSrc = isSmallBtn ? 'assets/play-sound-yellow.svg' : 'assets/play-sound.svg';
-    const pauseSrc = isSmallBtn ? 'assets/pauze-sound-yellow.svg' : 'assets/pauze-sound.svg';
-    
+function setAudioState(btn, playing) {
+    const icons = btn.classList.contains('audio-btn--overlay') ? AUDIO_ICONS.overlay : AUDIO_ICONS.default;
+    btn.querySelector('img').src = playing ? icons.pause : icons.play;
+    btn.setAttribute('aria-pressed', String(playing));
+}
+
+function toggleAudio(btn) {
+    const audio = document.getElementById(btn.dataset.audio);
+
     if (audio.paused) {
-        audio.play();
-        btn.classList.add('playing');
-        playIcon.src = pauseSrc;
-        playIcon.alt = 'Pause';
+        audio.play().catch(() => setAudioState(btn, false));
+        setAudioState(btn, true);
     } else {
         audio.pause();
-        btn.classList.remove('playing');
-        playIcon.src = playSrc;
-        playIcon.alt = 'Play';
+        setAudioState(btn, false);
     }
-    
-    // Reset to play button when audio ends
-    audio.onended = function() {
-        btn.classList.remove('playing');
-        playIcon.src = playSrc;
-        playIcon.alt = 'Play';
-        audio.currentTime = 0;
-    };
+}
+
+function stopAudio(btn) {
+    const audio = document.getElementById(btn.dataset.audio);
+    audio.pause();
+    audio.currentTime = 0;
+    setAudioState(btn, false);
+}
+
+function stopAllAudio() {
+    audioButtons.forEach(stopAudio);
 }
 
 // ===========================================
 // VIDEO POPUP
 // ===========================================
 
-function openVideoPopup() {
-    const popup = document.getElementById('video-popup');
-    const video = document.getElementById('molenberg-video');
-    popup.classList.remove('hidden');
-    popup.classList.add('flex');
-    if (video) {
-        video.currentTime = 0;
-        video.play();
-    }
+function openVideoDialog() {
+    videoDialog.showModal();
+    molenbergVideo.currentTime = 0;
+    molenbergVideo.play().catch(() => {});
 }
-
-function closeVideoPopup() {
-    const popup = document.getElementById('video-popup');
-    const video = document.getElementById('molenberg-video');
-    if (video) {
-        video.pause();
-        video.currentTime = 0;
-    }
-    popup.classList.add('hidden');
-    popup.classList.remove('flex');
-}
-
-// Sluit popup bij klikken buiten de video
-document.addEventListener('click', function(e) {
-    const popup = document.getElementById('video-popup');
-    if (e.target === popup) {
-        closeVideoPopup();
-    }
-});
 
 // ===========================================
 // SCROLL PROGRESS
 // ===========================================
 
-window.addEventListener('scroll', function() {
-    const fill = document.getElementById("fill");
-    if (!fill) return;
-    
-    let winScroll = document.body.scrollTop || document.documentElement.scrollTop;
-    let height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
-    let scrolled = height > 0 ? (winScroll / height) * 100 : 0;
-    fill.style.height = scrolled + "%";
-    
-    // Marker activation logic - alleen voor timeline-ui markers
-    const markerPositions = [10, 30, 50, 70, 90];
-    let markers = document.querySelectorAll('#timeline-ui .marker');
-    markers.forEach((m, idx) => {
-        if (scrolled >= markerPositions[idx] - 5) {
-            m.classList.add('active');
-        } else {
-            m.classList.remove('active');
-        }
+let progressQueued = false;
+
+function updateProgress() {
+    progressQueued = false;
+    if (timeline.hidden) return;
+
+    const scrollable = document.documentElement.scrollHeight - window.innerHeight;
+    const scrolled = scrollable > 0 ? (window.scrollY / scrollable) * 100 : 0;
+    timelineFill.style.transform = `scaleY(${scrolled / 100})`;
+
+    timelineMarkers.forEach((marker) => {
+        marker.classList.toggle('is-active', scrolled >= marker.dataset.pos - 5);
     });
-});
+}
 
 // ===========================================
-// CHART UTILITIES
+// CHART
 // ===========================================
+
+function loadScript(src) {
+    return new Promise((resolve, reject) => {
+        const script = document.createElement('script');
+        script.src = src;
+        script.onload = resolve;
+        script.onerror = reject;
+        document.head.append(script);
+    });
+}
+
+function loadChartLibrary() {
+    // Na elkaar laden: de datalabels-plugin heeft Chart.js nodig
+    chartLibrary ??= CHART_SCRIPTS.reduce((ready, src) => ready.then(() => loadScript(src)), Promise.resolve());
+    return chartLibrary;
+}
 
 function destroyCharts() {
-    Object.values(chartInstances).forEach(chart => {
-        if (chart) chart.destroy();
+    if (migrantChart) migrantChart.destroy();
+    migrantChart = null;
+}
+
+// Chart Migrant Mix - Herkomst bevolking (horizontale bar voor leesbaarheid)
+async function initMigrantChart() {
+    const canvas = document.getElementById('chartMigrantMix');
+
+    try {
+        await loadChartLibrary();
+    } catch {
+        chartLibrary = null; // volgende keer opnieuw proberen
+        return;
+    }
+
+    // De gebruiker kan intussen weg zijn genavigeerd, of de grafiek bestaat al
+    if (migrantChart || canvas.closest('[data-view]').hidden) return;
+
+    // Op smalle schermen: kleinere letters en lange labels over twee regels
+    const narrow = canvas.parentElement.clientWidth < 400;
+
+    migrantChart = new Chart(canvas, {
+        type: 'bar',
+        plugins: [ChartDataLabels],
+        data: {
+            labels: ['Limburgers', narrow ? ['Drenten/', 'Noorderlingen'] : 'Drenten/Noorderlingen', 'Polen', 'Duitsers', 'Overig'],
+            datasets: [{
+                data: [55, 15, 14, 12, 4],
+                backgroundColor: ['#1eb1eb', '#189acc', '#1283aa', '#0c6c88', '#065566'],
+                borderWidth: 0,
+                borderRadius: 4,
+                barThickness: narrow ? 22 : 28,
+            }],
+        },
+        options: {
+            indexAxis: 'y',
+            responsive: true,
+            maintainAspectRatio: false,
+            layout: {
+                padding: { right: narrow ? 40 : 50 },
+            },
+            plugins: {
+                tooltip: { enabled: false },
+                legend: { display: false },
+                title: {
+                    display: true,
+                    text: narrow ? ['Herkomst mijnwerkers', 'in Heerlen (1922)'] : 'Herkomst mijnwerkers in Heerlen (1922)',
+                    color: '#1eb1eb',
+                    font: { size: narrow ? 14 : 16, weight: 'bold' },
+                    padding: { bottom: 16 },
+                },
+                datalabels: {
+                    color: '#f1efee',
+                    anchor: 'end',
+                    align: 'right',
+                    offset: 8,
+                    font: { weight: 'bold', size: narrow ? 12 : 14 },
+                    formatter: (value) => `${value}%`,
+                },
+            },
+            scales: {
+                x: { display: false, max: 70 },
+                y: {
+                    ticks: {
+                        color: '#f1efee',
+                        font: { size: narrow ? 11 : 13, weight: '500' },
+                        padding: 8,
+                    },
+                    grid: { display: false },
+                    border: { display: false },
+                },
+            },
+        },
     });
-    chartInstances = {};
 }
 
-// Label wrapping voor charts
-function wrap(label) {
-    if (label.length <= 16) return label;
-    let words = label.split(' ');
-    let lines = [];
-    let currentLine = words[0];
-    
-    for (let i = 1; i < words.length; i++) {
-        if ((currentLine + " " + words[i]).length < 16) {
-            currentLine += " " + words[i];
-        } else {
-            lines.push(currentLine);
-            currentLine = words[i];
-        }
-    }
-    lines.push(currentLine);
-    return lines;
+// ===========================================
+// INITIALISATIE
+// ===========================================
+
+// Story-video's laden pas (preload="none") en spelen alleen af als ze bijna in beeld zijn
+function initLazyVideos() {
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(({ target, isIntersecting }) => {
+            if (isIntersecting) target.play().catch(() => {});
+            else target.pause();
+        });
+    }, { rootMargin: '100% 0px' });
+
+    document.querySelectorAll('video[data-lazy-video]').forEach((video) => observer.observe(video));
 }
 
-// Tooltip configuratie
-const tooltipConfig = {
-    callbacks: {
-        title: function(items) {
-            let label = items[0].chart.data.labels[items[0].dataIndex];
-            return Array.isArray(label) ? label.join(' ') : label;
-        }
-    }
+// Audio in secties met data-autopause stopt zodra de sectie uit beeld gaat
+function initSectionAudio() {
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+            if (!entry.isIntersecting) {
+                entry.target.querySelectorAll('[data-action="audio"]').forEach(stopAudio);
+            }
+        });
+    }, { threshold: 0.1 });
+
+    document.querySelectorAll('[data-autopause]').forEach((section) => observer.observe(section));
+
+    audioButtons.forEach((btn) => {
+        document.getElementById(btn.dataset.audio).addEventListener('ended', () => stopAudio(btn));
+    });
+}
+
+const actions = {
+    start: showSteenkoolVideo,
+    'skip-intro': skipSteenkoolVideo,
+    hub: showNavigator,
+    prehistory: showPreHistory,
+    story: (btn) => startStory(btn.dataset.story),
+    finish: finishStory,
+    intro: backToIntro,
+    audio: toggleAudio,
+    'open-video': openVideoDialog,
 };
 
-// ===========================================
-// CHART INITIALIZATION
-// ===========================================
+// Unmute intro video bij eerste klik op de pagina
+document.addEventListener('click', () => {
+    if (!document.getElementById('intro').hidden) introVideo.muted = false;
+}, { once: true });
 
-function initCharts() {
-    // Destroy bestaande charts eerst
-    destroyCharts();
-
-    // Chart Wealth - Kolenprijs over tijd
-    const ctx1 = document.getElementById('chartWealth1');
-    if (ctx1 && ctx1.getContext) {
-        chartInstances.wealth = new Chart(ctx1.getContext('2d'), {
-            type: 'line',
-            data: {
-                labels: ['1900', '1910', '1917', '1925'].map(wrap),
-                datasets: [{
-                    label: 'Prijsindex Kolen',
-                    data: [10, 15, 60, 45],
-                    borderColor: '#ffe652',
-                    fill: true,
-                    backgroundColor: 'rgba(255, 230, 82, 0.1)',
-                    tension: 0.3
-                }]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                plugins: {
-                    tooltip: tooltipConfig,
-                    legend: { display: false }
-                },
-                scales: {
-                    x: { ticks: { color: '#888' }, grid: { color: '#333' } },
-                    y: { ticks: { color: '#888' }, grid: { color: '#333' } }
-                }
-            }
-        });
-    }
-
-    // Chart Migrant Mix - Herkomst bevolking (horizontale bar voor leesbaarheid)
-    const ctx2 = document.getElementById('chartMigrantMix');
-    if (ctx2 && ctx2.getContext) {
-        chartInstances.migrant = new Chart(ctx2.getContext('2d'), {
-            type: 'bar',
-            plugins: [ChartDataLabels],
-            data: {
-                labels: ['Limburgers', 'Drenten/Noorderlingen', 'Polen', 'Duitsers', 'Overig'],
-                datasets: [{
-                    data: [55, 15, 14, 12, 4],
-                    backgroundColor: ['#1eb1eb', '#189acc', '#1283aa', '#0c6c88', '#065566'],
-                    borderWidth: 0,
-                    borderRadius: 4,
-                    barThickness: 28
-                }]
-            },
-            options: {
-                indexAxis: 'y',
-                responsive: true,
-                maintainAspectRatio: false,
-                layout: {
-                    padding: {
-                        right: 50
-                    }
-                },
-                plugins: {
-                    tooltip: { enabled: false },
-                    legend: { display: false },
-                    title: {
-                        display: true,
-                        text: 'Herkomst mijnwerkers in Heerlen (1922)',
-                        color: '#1eb1eb',
-                        font: {
-                            size: 16,
-                            weight: 'bold'
-                        },
-                        padding: {
-                            bottom: 16
-                        }
-                    },
-                    datalabels: {
-                        color: '#f1efee',
-                        anchor: 'end',
-                        align: 'right',
-                        offset: 8,
-                        font: {
-                            weight: 'bold',
-                            size: 14
-                        },
-                        formatter: function(value) {
-                            return value + '%';
-                        }
-                    }
-                },
-                scales: {
-                    x: {
-                        display: false,
-                        max: 70
-                    },
-                    y: {
-                        ticks: {
-                            color: '#f1efee',
-                            font: {
-                                size: 13,
-                                weight: '500'
-                            },
-                            padding: 8
-                        },
-                        grid: {
-                            display: false
-                        },
-                        border: {
-                            display: false
-                        }
-                    }
-                }
-            }
-        });
-    }
-
-    // Chart Hierarchy - Mijnwerkers status
-    const ctx3 = document.getElementById('chartHierarchy');
-    if (ctx3 && ctx3.getContext) {
-        chartInstances.hierarchy = new Chart(ctx3.getContext('2d'), {
-            type: 'bar',
-            data: {
-                labels: ['Houwers', 'Slepers', 'Piemels', 'Beambten'].map(wrap),
-                datasets: [{
-                    label: 'Status Index',
-                    data: [100, 70, 30, 90],
-                    backgroundColor: '#ffe652',
-                    borderRadius: 4
-                }]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                plugins: {
-                    tooltip: tooltipConfig,
-                    legend: { display: false }
-                },
-                scales: {
-                    x: { ticks: { color: '#888' }, grid: { display: false } },
-                    y: { ticks: { color: '#888' }, grid: { color: '#333' } }
-                }
-            }
-        });
-    }
-}
-
-// ===========================================
-// SECTION AUDIO OBSERVERS
-// ===========================================
-
-function initSectionAudio() {
-    // Setup audio observers for sections with sound
-    // Audio pauzeert automatisch wanneer sectie uit beeld gaat
-    const audioSections = [
-        { sectionId: 'kanarie-section', audioId: 'kanarie-audio', btnId: 'kanarie-play-btn' },
-        { sectionId: 'barbara-section', audioId: 'barbara-audio', btnId: 'barbara-play-btn' }
-    ];
-    
-    audioSections.forEach(({ sectionId, audioId, btnId }) => {
-        const section = document.getElementById(sectionId);
-        const audio = document.getElementById(audioId);
-        const btn = document.getElementById(btnId);
-        
-        if (!section || !audio) return;
-        
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (!entry.isIntersecting) {
-                    // Section is out of view - pause and reset audio + button
-                    audio.pause();
-                    audio.currentTime = 0;
-                    if (btn) {
-                        btn.classList.remove('playing');
-                        const playIcon = btn.querySelector('.play-icon');
-                        if (playIcon) {
-                            const isSmallBtn = btn.classList.contains('audio-play-btn-small');
-                            playIcon.src = isSmallBtn ? 'assets/play-sound-yellow.svg' : 'assets/play-sound.svg';
-                            playIcon.alt = 'Play';
-                        }
-                    }
-                }
-            });
-        }, {
-            threshold: 0.1 // Trigger when section goes out of view
-        });
-        
-        observer.observe(section);
-    });
-}
-
-// Initialize when DOM is ready
-document.addEventListener('DOMContentLoaded', () => {
-    initSectionAudio();
-    
-    // Show start button after 5 seconds
-    const startBtn = document.getElementById('start-btn');
-    if (startBtn) {
-        setTimeout(() => {
-            startBtn.classList.remove('opacity-0');
-            startBtn.classList.add('opacity-100');
-        }, 5000);
-    }
+// Alle knoppen met data-action via één listener
+document.addEventListener('click', (event) => {
+    const trigger = event.target.closest('[data-action]');
+    if (trigger) actions[trigger.dataset.action]?.(trigger);
 });
+
+steenkoolVideo.addEventListener('ended', skipSteenkoolVideo);
+
+// Popup: video stoppen bij sluiten, sluiten bij klik buiten de video
+videoDialog.addEventListener('close', () => {
+    molenbergVideo.pause();
+    molenbergVideo.currentTime = 0;
+});
+
+videoDialog.addEventListener('click', (event) => {
+    if (event.target === videoDialog) videoDialog.close();
+});
+
+window.addEventListener('scroll', () => {
+    if (progressQueued) return;
+    progressQueued = true;
+    requestAnimationFrame(updateProgress);
+}, { passive: true });
+
+timelineMarkers.forEach((marker) => { marker.style.top = `${marker.dataset.pos}%`; });
+views.forEach((view) => { view.tabIndex = -1; });
+
+initLazyVideos();
+initSectionAudio();
+
+// Toon startknop na 5 seconden
+setTimeout(() => startBtn.classList.add('is-visible'), 5000);
