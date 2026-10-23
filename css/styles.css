@@ -1,0 +1,1270 @@
+
+/* Prehistory Theme - Rood */
+#story-prehistory .prehistory-home-btn img {
+    filter: brightness(0) saturate(100%) invert(40%) sepia(95%) saturate(1000%) hue-rotate(330deg) brightness(95%) contrast(95%);
+}
+
+body:has(#story-prehistory:not(.hidden-section)) #timeline-ui {
+    background: rgba(224, 74, 79, 0.2);
+}
+
+body:has(#story-prehistory:not(.hidden-section)) #timeline-ui .timeline-fill {
+    background: #e04a4f;
+}
+
+body:has(#story-prehistory:not(.hidden-section)) #timeline-ui .marker.active {
+    background: #e04a4f;
+    border-color: #e04a4f;
+    box-shadow: 0 0 20px #e04a4f;
+}
+
+body:has(#story-prehistory:not(.hidden-section)) .terug-tijd-titel {
+    color: #e04a4f;
+}
+
+/* Migratie Theme - Blauw */
+#story-migratie .migratie-home-btn img,
+.migratie-theme .migratie-home-btn img {
+    filter: brightness(0) saturate(100%) invert(60%) sepia(90%) saturate(500%) hue-rotate(165deg) brightness(100%) contrast(100%);
+}
+
+body:has(#story-migratie:not(.hidden-section)) #timeline-ui {
+    background: rgba(30, 177, 235, 0.2);
+}
+
+body:has(#story-migratie:not(.hidden-section)) #timeline-ui .timeline-fill {
+    background: #1eb1eb;
+}
+
+body:has(#story-migratie:not(.hidden-section)) #timeline-ui .marker.active {
+    background: #1eb1eb;
+    border-color: #1eb1eb;
+    box-shadow: 0 0 20px #1eb1eb;
+}
+
+body:has(#story-migratie:not(.hidden-section)) .terug-tijd-titel {
+    color: #1eb1eb;
+}
+/* ===========================================
+   HEERLEN: DE STORY VAN HET ZWARTE GOUD
+   Main Stylesheet
+   =========================================== */
+
+/* --- CSS Variables --- */
+:root {
+    --geel: #ffe652;
+    --zwart: #101010;
+    --grijs: #111111;
+}
+
+/* --- Custom Fonts --- */
+@font-face {
+    font-family: 'Girdo Black';
+    src: url('../assets/Girdo Black.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
+
+/* --- Typography --- */
+/* Girdo Black */
+h1, h2, h3, .girdo-font {
+    font-family: 'Girdo Black', 'Anton', sans-serif;
+    text-transform: uppercase;
+    line-height: 0.85;
+    letter-spacing: -0.02em;
+}
+
+/* Circular Std Fallback */
+body, p, span, .circular-font {
+    font-family: 'Inter', sans-serif;
+    line-height: 1.45rem;
+}
+
+p {
+    font-size: 1.0rem;
+    line-height: 1.45rem;
+}
+
+/* Override Tailwind text-xl */
+.text-xl {
+    font-size: 1.0rem !important;
+    line-height: 1.45rem !important;
+}
+
+/* --- Base Styles --- */
+html {
+    scroll-behavior: smooth;
+}
+
+/* Afstand en positionering voor Terug in de tijd blok */
+.terug-tijd-blok {
+    margin-top: 40px;
+    margin-bottom: 0;
+    padding-top: 24px;
+    border-top: none;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-end;
+    width: 100%;
+}
+.terug-tijd-titel {
+    margin-bottom: 0px;
+    font-size: 1.1rem;
+    font-family: 'Girdo Black', 'Anton', sans-serif;
+    color: #e04a4f;
+    font-weight: 400;
+    letter-spacing: 0;
+    text-transform: none;
+    line-height: 1.3;
+}
+
+
+body {
+    background-color: var(--zwart);
+    color: #f1efee;
+    overflow-x: hidden;
+}
+
+/* Float Animation for button */
+@keyframes float {
+    0%, 100% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-10px);
+    }
+}
+
+.animate-float {
+    animation: float 2s ease-in-out infinite;
+}
+
+.animate-float:hover {
+    animation-play-state: paused;
+}
+
+/* --- Intro Section Layout --- */
+.intro-section {
+    height: 100vh;
+    max-height: 100vh;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1vh 1rem !important;
+}
+
+.intro-layout {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    width: 100%;
+    max-height: 100%;
+}
+
+.intro-bottom {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    align-items: center;
+    justify-content: center;
+    padding: 0.5rem 0;
+}
+
+@media (min-width: 768px) {
+    .intro-bottom {
+        flex-direction: row;
+        align-items: center;
+        justify-content: center;
+        gap: 0;
+        padding: 0.5rem 0;
+    }
+}
+
+.intro-quote {
+    font-size: 1rem;
+    font-style: italic;
+    color: #f1efee;
+    max-width: 700px;
+    line-height: 1.6;
+    text-align: left;
+}
+
+.intro-quote::before {
+    content: '"';
+    color: var(--geel);
+    font-size: 2rem;
+    font-weight: bold;
+    line-height: 0;
+    margin-right: 0.25rem;
+}
+
+@media (min-width: 768px) {
+    .intro-quote {
+        font-size: 1.15rem;
+    }
+}
+
+/* --- Video SVG Container --- */
+.video-svg-container {
+    position: relative;
+    width: 80%;
+    max-width: 900px;
+    margin: 0 auto;
+    max-height: 70vh;
+    filter: drop-shadow(0 0 15px var(--geel)) drop-shadow(0 0 60px rgba(255, 230, 82, 0.5));
+}
+
+.video-frame {
+    display: none;
+}
+
+/* --- Steenkool Video Overlay --- */
+.steenkool-video-section {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: var(--zwart);
+    z-index: 9999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.steenkool-video-section.hidden-section {
+    display: none;
+}
+
+.steenkool-video-container {
+    position: relative;
+    width: 90%;
+    max-width: 1000px;
+    /* Behoud aspect ratio van de SVG (1166 x 925) */
+    aspect-ratio: 1166 / 925;
+    max-height: 80vh;
+    filter: drop-shadow(0 0 15px var(--geel)) drop-shadow(0 0 60px rgba(255, 230, 82, 0.5));
+}
+
+.steenkool-video-masked {
+    width: 100%;
+    height: 100%;
+    display: block;
+    object-fit: contain;
+    /* Gebruik de SVG als mask */
+    -webkit-mask-image: url('../assets/Intro-Video-Steenkool.svg');
+    mask-image: url('../assets/Intro-Video-Steenkool.svg');
+    -webkit-mask-size: 100% 100%;
+    mask-size: 100% 100%;
+    -webkit-mask-repeat: no-repeat;
+    mask-repeat: no-repeat;
+    -webkit-mask-position: center;
+    mask-position: center;
+}
+
+.skip-video-btn {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border: none;
+    background: transparent;
+    padding: 0;
+    z-index: 10000;
+}
+
+.skip-video-btn img {
+    width: 150px;
+    height: auto;
+    transition: all 0.3s ease;
+}
+
+.skip-video-btn:hover {
+    transform: scale(1.05);
+}
+
+.skip-video-btn:hover img {
+    filter: brightness(1.2);
+}
+
+.skip-video-btn.hidden {
+    display: none;
+}
+
+.skip-video-btn.fade-in {
+    animation: fadeInUp 0.5s ease forwards;
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@media (max-width: 768px) {
+    .skip-video-btn {
+        bottom: 20px;
+        right: 20px;
+    }
+    
+    .skip-video-btn img {
+        width: 100px;
+    }
+}
+
+.intro-video-masked {
+    width: 100%;
+    height: auto;
+    max-height: 85vh;
+    display: block;
+    object-fit: cover;
+    transform: scale(1.8);
+    clip-path: polygon(
+        30.65% 32.23%, 
+        52.30% 24.73%, 
+        80.69% 32.85%, 
+        84.67% 50.92%, 
+        80.08% 67.47%, 
+        81.81% 75.28%, 
+        54.65% 68.08%, 
+        33.61% 75.28%, 
+        15.33% 67.77%, 
+        20.33% 56.28%, 
+        15.33% 34.53%, 
+        24.11% 24.73%, 
+        30.65% 32.23%
+    );
+}
+
+/* --- Video Container (legacy) --- */
+.video-container {
+    position: relative;
+    width: 100%;
+    max-width: 100%;
+    overflow: hidden;
+    background: var(--grijs);
+    border-left: 10px solid var(--geel);
+    clip-path: polygon(0 0, 100% 0, 100% 88%, 90% 100%, 0 100%);
+    padding: 1rem;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+}
+
+@media (min-width: 768px) {
+    .video-container {
+        padding: 1.25rem;
+    }
+}
+
+.video-container::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 40px;
+    height: 40px;
+    background: var(--geel);
+    clip-path: polygon(100% 0, 0 0, 100% 100%);
+}
+
+@media (min-width: 768px) {
+    .video-container::before {
+        width: 50px;
+        height: 50px;
+    }
+}
+
+.video-container::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50px;
+    right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, var(--geel) 0%, transparent 100%);
+}
+
+.intro-video {
+    width: 100%;
+    height: auto;
+    display: block;
+    max-height: 55vh;
+    object-fit: cover;
+    border-radius: 2px;
+}
+
+/* --- Components --- */
+
+/* Steenkool hoekige vormen */
+.stone-card {
+    background: var(--grijs);
+    clip-path: polygon(0 0, 100% 0, 100% 88%, 90% 100%, 0 100%);
+    padding: 3rem;
+    position: relative;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+
+.btn-svg {
+    position: relative;
+    display: inline-block;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border: none;
+    background: transparent;
+    padding: 0;
+}
+
+.btn-svg img {
+    width: 280px;
+    height: auto;
+    transition: all 0.3s ease;
+}
+
+.btn-svg span {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-weight: 900;
+    text-transform: uppercase;
+    color: var(--zwart);
+    font-size: 1rem;
+    white-space: nowrap;
+    pointer-events: none;
+}
+
+.btn-svg:hover {
+    transform: scale(1.05);
+}
+
+.btn-svg:hover img {
+    filter: brightness(1.2);
+}
+
+/* --- Simple SVG Buttons (voor navigator) --- */
+.btn-svg-simple {
+    display: inline-block;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border: none;
+    background: transparent;
+    padding: 0;
+}
+
+.btn-svg-simple img {
+    width: 100%;
+    max-width: 400px;
+    height: auto;
+    transition: all 0.3s ease;
+}
+
+.btn-svg-simple:hover {
+    transform: scale(1.05);
+}
+
+.btn-svg-simple:hover img {
+    filter: brightness(1.2);
+}
+
+/* Roterende button hover effect */
+.btn-rotate {
+    transition: all 0.4s ease;
+    display: block;
+    margin: 0 auto;
+}
+
+.btn-rotate img {
+    width: 80px;
+    max-width: 5vw;
+    min-width: 60px;
+    height: auto;
+    transition: transform 0.4s ease;
+    margin-top: 50px;
+}
+
+.btn-rotate:hover {
+    transform: scale(1.05);
+}
+
+.btn-rotate:hover img {
+    transform: rotate(360deg);
+    filter: brightness(1.2);
+}
+
+/* Gekleurde glows voor thema knoppen */
+.btn-glow-green img {
+    filter: drop-shadow(0 0 12px rgba(45, 180, 92, 0.6));
+}
+.btn-glow-green:hover img {
+    filter: drop-shadow(0 0 24px rgba(45, 180, 92, 0.9)) brightness(1.15);
+}
+
+.btn-glow-blue img {
+    filter: drop-shadow(0 0 12px rgba(30, 177, 235, 0.6));
+}
+.btn-glow-blue:hover img {
+    filter: drop-shadow(0 0 24px rgba(30, 177, 235, 0.9)) brightness(1.15);
+}
+
+.btn-glow-yellow img {
+    filter: drop-shadow(0 0 12px rgba(255, 230, 82, 0.6));
+}
+.btn-glow-yellow:hover img {
+    filter: drop-shadow(0 0 24px rgba(255, 230, 82, 0.9)) brightness(1.15);
+}
+
+.btn-glow-red img {
+    filter: drop-shadow(0 0 12px rgba(224, 74, 79, 0.6));
+}
+.btn-glow-red:hover img {
+    filter: drop-shadow(0 0 24px rgba(224, 74, 79, 0.9)) brightness(1.15);
+}
+
+/* Start knop specifiek kleiner */
+#start-btn img {
+    max-width: 220px;
+}
+
+/* --- Navigation Icons --- */
+
+
+.btn-svg-nav:hover {
+    transform: scale(1.05);
+}
+
+.btn-svg-nav:hover .btn-bg {
+    filter: brightness(1.2);
+}
+
+/* --- Navigation Icons --- */
+.nav-icon {
+    width: 60px;
+    height: 60px;
+    margin-bottom: 1rem;
+    transition: all 0.3s ease;
+}
+
+.nav-icon-small {
+    width: 50px;
+    height: 50px;
+    margin-bottom: 0.75rem;
+    transition: all 0.3s ease;
+}
+
+.group:hover .nav-icon,
+.group:hover .nav-icon-small {
+    filter: brightness(0) saturate(100%) invert(36%) sepia(93%) saturate(1352%) hue-rotate(131deg) brightness(97%) contrast(101%);
+}
+
+@media (min-width: 768px) {
+    .nav-icon {
+        width: 80px;
+        height: 80px;
+    }
+    
+    .nav-icon-small {
+        width: 60px;
+        height: 60px;
+    }
+}
+
+
+/* --- Timeline --- */
+.timeline-rail {
+    position: fixed;
+    left: 40px;
+    top: 0;
+    bottom: 0;
+    width: 2px;
+    background: rgba(255, 255, 255, 0.1);
+    z-index: 40;
+}
+
+.timeline-fill {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    background: var(--geel);
+    height: 0%;
+    transition: height 0.1s ease-out;
+}
+
+.marker {
+    position: absolute;
+    left: -9px;
+    width: 20px;
+    height: 20px;
+    background: var(--zwart);
+    border: 3px solid #333;
+    transform: rotate(45deg);
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+.marker.active {
+    background: var(--geel);
+    border-color: var(--geel);
+    box-shadow: 0 0 20px var(--geel);
+}
+
+.marker:hover {
+    transform: rotate(45deg) scale(1.2);
+}
+
+/* --- Charts --- */
+.chart-container {
+    position: relative;
+    width: 100%;
+    max-width: 600px;
+    height: 250px;
+    margin: 2rem auto;
+}
+
+/* --- Sections --- */
+section {
+    min-height: 100vh;
+    padding: 10vh 10% 10vh 120px;
+    border-bottom: 1px solid #222;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    animation: fadeIn 0.6s ease-out;
+}
+
+/* Content container voor tekst in sections */
+.section-content {
+    max-width: 800px;
+    width: 100%;
+}
+
+/* Paragraph styling met max-width */
+section p,
+.section-content p {
+    max-width: 700px;
+    font-size: 1rem;
+    line-height: 1.7;
+}
+
+/* --- Image Placeholder --- */
+.image-box {
+    background: #0a0a0a;
+    border: 1px dashed #333;
+    width: 100%;
+    height: 350px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #444;
+    font-size: 0.8rem;
+    margin: 2rem 0;
+    border-radius: 4px;
+}
+
+/* --- Utility Classes --- */
+.hidden-section {
+    display: none;
+}
+
+/* Navigator Hub - geen scroll */
+.navigator-hub {
+    height: 100vh;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.navigator-hub.hidden-section {
+    display: none;
+}
+
+/* --- Animations --- */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* --- Responsive Design --- */
+
+/* Kleine schermen (mobiel) */
+@media (max-width: 768px) {
+    .timeline-rail {
+        display: none;
+    }
+    
+    section {
+        padding: 6vh 5% !important;
+        min-height: auto;
+    }
+    
+    h2 {
+        font-size: 2.2rem !important;
+    }
+    
+    section p,
+    .section-content p {
+        font-size: 0.95rem;
+        line-height: 1.6;
+    }
+    
+    .chart-container {
+        height: 220px;
+        max-width: 100%;
+    }
+}
+
+/* Tablet schermen */
+@media (min-width: 769px) and (max-width: 1024px) {
+    section {
+        padding: 8vh 8% 8vh 100px;
+    }
+    
+    section p,
+    .section-content p {
+        font-size: 1.05rem;
+    }
+    
+    h2 {
+        font-size: 3.5rem;
+    }
+}
+
+/* Grote schermen (desktop) */
+@media (min-width: 1025px) and (max-width: 1440px) {
+    section {
+        padding: 10vh 12% 10vh 140px;
+    }
+    
+    section p,
+    .section-content p {
+        font-size: 1.1rem;
+        max-width: 750px;
+    }
+    
+    h2 {
+        font-size: 4rem;
+    }
+}
+
+/* Extra grote schermen (wide monitors) */
+@media (min-width: 1441px) {
+    section {
+        padding: 10vh 15% 10vh 160px;
+    }
+    
+    section p,
+    .section-content p {
+        font-size: 1.2rem;
+        max-width: 850px;
+        line-height: 1.8;
+    }
+    
+    h2 {
+        font-size: 5rem;
+    }
+    
+    .chart-container {
+        max-width: 700px;
+        height: 300px;
+    }
+    
+    .video-2-container {
+        max-width: 1000px;
+    }
+}
+
+/* Ultra-wide schermen (2K+) */
+@media (min-width: 1921px) {
+    section {
+        padding: 10vh 20% 10vh 180px;
+    }
+    
+    section p,
+    .section-content p {
+        font-size: 1.35rem;
+        max-width: 950px;
+    }
+    
+    h2 {
+        font-size: 6rem;
+    }
+    
+    .terug-tijd-titel {
+        font-size: 1.3rem;
+    }
+}
+
+/* --- Video 2 Container (Molenberg popup) --- */
+.video-2-container {
+    position: relative;
+    width: 100%;
+    max-width: 800px;
+    margin: 0 auto;
+    filter: drop-shadow(0 0 15px var(--geel)) drop-shadow(0 0 60px rgba(255, 230, 82, 0.5));
+}
+
+/* Migratie Theme - Blauwe glow voor video's */
+#story-migratie .video-2-container,
+.migratie-theme .video-2-container {
+    filter: drop-shadow(0 0 15px #1eb1eb) drop-shadow(0 0 60px rgba(30, 177, 235, 0.5));
+}
+
+/* Prehistory Theme - Rode glow voor video's */
+#story-prehistory .video-2-container,
+.prehistory-theme .video-2-container {
+    filter: drop-shadow(0 0 15px #e04a4f) drop-shadow(0 0 60px rgba(224, 74, 79, 0.5));
+}
+
+/* Welvaart Theme - Groene glow voor video's */
+#story-welvaart .video-2-container,
+.welvaart-theme .video-2-container {
+    filter: drop-shadow(0 0 15px #2db45c) drop-shadow(0 0 60px rgba(45, 180, 92, 0.5));
+}
+
+/* Val Theme - Roze glow voor video's */
+#story-val .video-2-container,
+.val-theme .video-2-container {
+    filter: drop-shadow(0 0 15px #ef55ad) drop-shadow(0 0 60px rgba(239, 85, 173, 0.5));
+}
+
+.video-2-masked {
+    width: 100%;
+    height: auto;
+    display: block;
+    object-fit: cover;
+    clip-path: polygon(
+        77.14% 81.76%,
+        46.78% 95.12%,
+        6.96% 80.67%,
+        1.38% 48.48%,
+        7.82% 19.02%,
+        5.39% 5.11%,
+        43.48% 17.93%,
+        72.99% 5.11%,
+        98.62% 18.48%,
+        91.60% 38.93%,
+        98.62% 77.66%,
+        86.31% 95.12%,
+        77.14% 81.76%
+    );
+}
+
+/* Clipmask variatie 1 */
+.video-2-masked.mask-1 {
+    clip-path: polygon(
+        86.31% 3.26%,
+        98.62% 21.39%,
+        91.60% 61.61%,
+        98.62% 82.85%,
+        72.99% 96.73%,
+        43.48% 83.41%,
+        5.39% 96.73%,
+        7.82% 82.28%,
+        1.38% 51.70%,
+        9.83% 12.11%,
+        46.78% 7.00%,
+        73.50% 11.41%,
+        86.31% 3.26%
+    );
+}
+
+/* Clipmask variatie 2 */
+.video-2-masked.mask-2 {
+    clip-path: polygon(
+        86.31% 3.26%,
+        98.62% 21.39%,
+        91.60% 61.61%,
+        98.62% 82.85%,
+        77.25% 98.65%,
+        43.48% 83.41%,
+        5.39% 96.73%,
+        7.82% 82.28%,
+        1.38% 51.70%,
+        3.42% 4.26%,
+        20.68% 13.51%,
+        46.78% 3.26%,
+        73.50% 11.41%,
+        86.31% 3.26%
+    );
+}
+
+/* Clipmask variatie 3 */
+.video-2-masked.mask-3 {
+    clip-path: polygon(
+        6.02% 25.55%,
+        27.06% 12.01%,
+        62.53% 18.78%,
+        95.16% 18.78%,
+        90.67% 36.45%,
+        95.16% 85.99%,
+        75.77% 74.76%,
+        44.09% 87.97%,
+        19.26% 79.72%,
+        4.84% 83.68%,
+        8.38% 52.96%,
+        6.02% 25.55%
+    );
+}
+
+/* Clipmask variatie 4 */
+.video-2-masked.mask-4 {
+    clip-path: polygon(
+        8% 5%,
+        35% 12%,
+        65% 5%,
+        92% 10%,
+        88% 35%,
+        95% 55%,
+        90% 85%,
+        70% 95%,
+        40% 88%,
+        15% 95%,
+        5% 75%,
+        10% 45%,
+        5% 20%,
+        8% 5%
+    );
+}
+
+/* Portrait clipmask voor hoge afbeeldingen */
+.video-2-masked.mask-portrait {
+    clip-path: polygon(
+        5% 3%,
+        40% 8%,
+        70% 3%,
+        95% 8%,
+        92% 25%,
+        97% 50%,
+        93% 75%,
+        97% 92%,
+        65% 97%,
+        35% 93%,
+        8% 97%,
+        3% 80%,
+        7% 50%,
+        3% 20%,
+        5% 3%
+    );
+}
+
+/* --- Custom Audio Player --- */
+.audio-player-container {
+    background: transparent;
+    border: 2px solid var(--grijs);
+    padding: 1.5rem;
+    clip-path: polygon(0 0, 100% 0, 100% 85%, 95% 100%, 0 100%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+}
+
+.audio-player-title {
+    font-family: 'Girdo Black', 'Anton', sans-serif;
+    font-size: 1.2rem;
+    color: #ffe652;
+    text-transform: uppercase;
+    text-align: center;
+}
+
+.audio-play-btn {
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    transition: transform 0.3s ease;
+}
+
+.audio-play-btn:hover {
+    transform: scale(1.1);
+}
+
+.audio-play-btn .play-icon {
+    width: 80px;
+    height: 80px;
+    display: block;
+}
+
+/* Kleine audio play knop - voor bij afbeeldingen/video's */
+.audio-play-btn-small {
+    position: absolute;
+    bottom: 12px;
+    right: 12px;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    transition: all 0.3s ease;
+    z-index: 10;
+}
+
+.audio-play-btn-small:hover {
+    transform: scale(1.15);
+}
+
+.audio-play-btn-small .play-icon {
+    width: 36px;
+    height: 36px;
+    display: block;
+}
+
+/* Val Theme - Roze audio player */
+.audio-player-val .audio-player-title {
+    color: #ef55ad;
+}
+
+.audio-player-val .custom-audio-player::-webkit-media-controls-panel {
+    background: linear-gradient(90deg, rgba(239, 85, 173, 0.2), rgba(239, 85, 173, 0.1));
+}
+
+.audio-player-val .custom-audio-player::-webkit-media-controls-timeline {
+    filter: sepia(1) hue-rotate(280deg) saturate(3);
+}
+
+.audio-player-val .custom-audio-player::-webkit-media-controls-current-time-display,
+.audio-player-val .custom-audio-player::-webkit-media-controls-time-remaining-display {
+    color: #ef55ad;
+}
+
+.audio-player-val .custom-audio-player::-webkit-media-controls-volume-slider {
+    filter: sepia(1) hue-rotate(280deg) saturate(3);
+}
+
+/* --- Mine Table Styling (Hoekig/Steen-achtig) --- */
+.mine-table-container {
+    background: var(--grijs);
+    padding: 1rem;
+    position: relative;
+}
+
+/* Welvaart Theme - Groen */
+.welvaart-theme .timeline-fill {
+    background: #2db45c;
+}
+
+.welvaart-theme .marker.active {
+    background: #2db45c;
+    border-color: #2db45c;
+    box-shadow: 0 0 20px #2db45c;
+}
+
+.welvaart-theme ~ #timeline-ui .timeline-fill,
+#story-welvaart.welvaart-theme ~ #timeline-ui .timeline-fill {
+    background: #2db45c;
+}
+
+/* Groene home knop voor Welvaart */
+.welvaart-home-btn img {
+    filter: brightness(0) saturate(100%) invert(55%) sepia(90%) saturate(400%) hue-rotate(100deg) brightness(95%) contrast(100%);
+}
+
+/* Groene timeline rail wanneer Welvaart actief is */
+body:has(#story-welvaart:not(.hidden-section)) #timeline-ui {
+    background: rgba(45, 180, 92, 0.2);
+}
+
+body:has(#story-welvaart:not(.hidden-section)) #timeline-ui .timeline-fill {
+    background: #2db45c;
+}
+
+body:has(#story-welvaart:not(.hidden-section)) #timeline-ui .marker.active {
+    background: #2db45c;
+    border-color: #2db45c;
+    box-shadow: 0 0 20px #2db45c;
+}
+
+body:has(#story-welvaart:not(.hidden-section)) .terug-tijd-titel {
+    color: #2db45c;
+}
+
+/* Val/Sluiting Theme - Roze */
+.val-home-btn img {
+    filter: brightness(0) saturate(100%) invert(55%) sepia(90%) saturate(500%) hue-rotate(300deg) brightness(95%) contrast(100%);
+}
+
+body:has(#story-val:not(.hidden-section)) #timeline-ui {
+    background: rgba(239, 85, 173, 0.2);
+}
+
+body:has(#story-val:not(.hidden-section)) #timeline-ui .timeline-fill {
+    background: #ef55ad;
+}
+
+body:has(#story-val:not(.hidden-section)) #timeline-ui .marker.active {
+    background: #ef55ad;
+    border-color: #ef55ad;
+    box-shadow: 0 0 20px #ef55ad;
+}
+
+body:has(#story-val:not(.hidden-section)) .terug-tijd-titel {
+    color: #ef55ad;
+}
+
+.mine-table-welvaart .mine-table thead {
+    background: linear-gradient(90deg, #2db45c, #259249);
+}
+
+.mine-table-welvaart .badge-staats {
+    background: #2db45c;
+}
+
+.mine-table-welvaart tbody tr.row-staats {
+    background: rgba(45, 180, 92, 0.05);
+}
+
+.mine-table-welvaart tbody tr.row-staats:hover {
+    background: rgba(45, 180, 92, 0.15);
+}
+
+.mine-table-welvaart tbody tr:hover {
+    background: rgba(45, 180, 92, 0.1);
+}
+
+/* Val Theme - Roze tabel styling */
+.mine-table-val .mine-table thead {
+    background: linear-gradient(90deg, #ef55ad, #d94a9a);
+}
+
+.mine-table-val tbody tr:hover {
+    background: rgba(239, 85, 173, 0.1);
+}
+
+.mine-table-val h3 {
+    color: #ef55ad;
+}
+
+.mine-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.mine-table thead {
+    background: linear-gradient(90deg, #ffe652, #e6cf4a);
+}
+
+.mine-table th {
+    color: var(--zwart);
+    font-weight: 900;
+    text-transform: uppercase;
+    padding: 0.4rem 0.4rem;
+    text-align: left;
+    font-size: 0.6rem;
+    letter-spacing: 0.01em;
+    border-bottom: 2px solid var(--zwart);
+}
+
+.mine-table td {
+    padding: 0.4rem 0.4rem;
+    border-bottom: 1px solid #333;
+    color: #e0e0e0;
+    vertical-align: middle;
+    font-size: 0.7rem;
+}
+
+.mine-table tbody tr {
+    transition: all 0.2s ease;
+}
+
+.mine-table tbody tr:hover {
+    background: rgba(255, 230, 82, 0.1);
+}
+
+.mine-table tbody tr.row-staats {
+    background: rgba(255, 230, 82, 0.05);
+}
+
+.mine-table tbody tr.row-staats:hover {
+    background: rgba(255, 230, 82, 0.15);
+}
+
+.mine-table tbody tr.row-special td {
+    font-style: italic;
+    color: #999;
+}
+
+/* Badges voor Eigendom */
+.badge-privaat,
+.badge-staats {
+    display: inline-block;
+    padding: 0.2rem 0.5rem;
+    font-size: 0.7rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+    clip-path: polygon(0 0, 100% 0, 95% 50%, 100% 100%, 0 100%, 5% 50%);
+}
+
+.badge-privaat {
+    background: #444;
+    color: #f1efee;
+}
+
+.badge-staats {
+    background: var(--geel);
+    color: var(--zwart);
+}
+
+.table-footnote {
+    margin-top: 1rem;
+    font-size: 0.75rem;
+    color: #888;
+    font-style: italic;
+}
+
+.table-footnote sup {
+    color: var(--geel);
+}
+
+/* Responsive table */
+@media (max-width: 768px) {
+    .mine-table-container {
+        padding: 1rem;
+    }
+    
+    .mine-table {
+        font-size: 0.75rem;
+    }
+    
+    .mine-table th,
+    .mine-table td {
+        padding: 0.5rem 0.3rem;
+    }
+}
+
+/* Responsive table voor grote schermen */
+@media (min-width: 1441px) {
+    .mine-table-container {
+        max-width: 900px;
+    }
+    
+    .mine-table th {
+        font-size: 0.75rem;
+        padding: 0.6rem 0.5rem;
+    }
+    
+    .mine-table td {
+        font-size: 0.85rem;
+        padding: 0.6rem 0.5rem;
+    }
+}
