@@ -82,8 +82,9 @@ function initCanaryGame(game) {
             results = [];
             renderRounds();
         }
-        // Het kanariegeluid bij de foto zou het spel verstoren
+        // Het kanariegeluid bij de foto en het voorlezen zouden het spel verstoren
         if (typeof stopAllAudio === 'function') stopAllAudio();
+        document.dispatchEvent(new CustomEvent('exclusive-sound', { detail: { source: 'canary-game' } }));
         audioCtx ??= new (window.AudioContext || window.webkitAudioContext)();
         audioCtx.resume();
 
