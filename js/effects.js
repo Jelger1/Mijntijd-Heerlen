@@ -185,7 +185,11 @@ function createParticle(anywhere) {
 
 function drawDust(now) {
     if (!dust.running) return;
-    const dt = Math.min((now - dust.last) / 1000, 0.05);
+    requestAnimationFrame(drawDust);
+
+    // Het stof beweegt langzaam: ±30 beelden per seconde is genoeg en halveert het werk op telefoons
+    if (now - dust.last < 32) return;
+    const dt = Math.min((now - dust.last) / 1000, 0.1);
     dust.last = now;
     const { ctx } = dust;
     const [r, g, b] = dust.rgb;
@@ -203,7 +207,6 @@ function drawDust(now) {
         ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
         ctx.fill();
     }
-    requestAnimationFrame(drawDust);
 }
 
 function setDustRunning(on) {
