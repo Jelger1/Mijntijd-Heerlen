@@ -51,7 +51,7 @@
         <section id="intro" class="intro" data-view aria-label="Intro">
             <div class="intro__inner">
                 <div class="intro__frame">
-                    <video id="intro-video" class="intro__video" width="1280" height="720" loop muted autoplay playsinline preload="auto">
+                    <video disableremoteplayback x-webkit-airplay="deny" id="intro-video" class="intro__video" width="1280" height="720" loop muted autoplay playsinline preload="auto">
                         <!-- Volledige versie voor tablet/desktop, lichtere versie voor telefoons -->
                         <source src="assets/INTRO-VIDEO.mp4" type="video/mp4" media="(min-width: 48em) and (min-height: 32em)">
                         <source src="assets/video/INTRO-VIDEO-mobiel.mp4" type="video/mp4">
@@ -68,7 +68,7 @@
         <!-- STEENKOOL INTRO VIDEO -->
         <section id="steenkool-video-overlay" class="steenkool" data-view hidden aria-label="Introductievideo">
             <div class="steenkool__frame">
-                <video id="steenkool-video" class="steenkool__video" width="608" height="480" playsinline preload="metadata">
+                <video disableremoteplayback x-webkit-airplay="deny" id="steenkool-video" class="steenkool__video" width="608" height="480" playsinline preload="metadata">
                     <source src="assets/Intro-Video-Steenkool.mp4" type="video/mp4">
                 </video>
             </div>
@@ -132,7 +132,7 @@
                 <div class="chapter__grid">
                     <p class="chapter__text">Aan het begin van de Tweede Wereldoorlog, in 1940, stuitte Heerlen plotseling op een vergeten wereld. Bij graafwerkzaamheden in het centrum kwam een compleet Romeins badhuis tevoorschijn, dat eeuwenlang verborgen lag onder het zand. Dit was vroeger dé plek om te zien en gezien te worden; na het werk kwamen de inwoners hier samen om te wassen, te roddelen en belangrijke deals te sluiten. Tegenwoordig kun je deze oude 'wellness' nog steeds met eigen ogen bekijken in het <button type="button" class="term" data-term="thermenmuseum">Thermenmuseum</button>. Maar na het vertrek van de Romeinen veranderde alles: het ritme, het leven en zelfs het hele landschap...</p>
                     <div class="media-frame media-frame--mask-2">
-                        <video class="media-frame__media" width="640" height="480" loop muted playsinline preload="none" data-poster="assets/video/Opgravingen-1940.jpg" data-lazy-video>
+                        <video disableremoteplayback x-webkit-airplay="deny" class="media-frame__media" width="640" height="480" loop muted playsinline preload="none" data-poster="assets/video/Opgravingen-1940.jpg" data-lazy-video>
                             <source src="assets/video/Opgravingen-1940.mp4" type="video/mp4">
                         </video>
                     </div>
@@ -382,7 +382,7 @@
                 <div class="chapter__grid">
                     <p class="chapter__text">De wederopbouw draait op volle toeren en de Limburgse bodem vraagt om meer handen dan de streek kan bieden. In de 'Gezellenhuizen' (*was een soort hotel-pension voor vrijgezelle mijnwerkers) klinken nieuwe ritmes; de geur van sterke espresso en olijfolie waait door de straten. Jongemannen uit Italië en Spanje dalen nu af in de zwarte schachten om de Nederlandse economie te stutten. Heerlen kleurt voor het eerst echt zuidelijk, terwijl de mijnklok onvermoeibaar de maat van de vooruitgang blijft slaan.</p>
                     <div class="media-frame media-frame--narrow media-frame--mask-3">
-                        <video class="media-frame__media" width="560" height="560" loop muted playsinline preload="none" data-poster="assets/video/Italiaan.jpg" data-lazy-video>
+                        <video disableremoteplayback x-webkit-airplay="deny" class="media-frame__media" width="560" height="560" loop muted playsinline preload="none" data-poster="assets/video/Italiaan.jpg" data-lazy-video>
                             <source src="assets/video/Italiaan.mp4" type="video/mp4">
                         </video>
                     </div>
@@ -393,7 +393,7 @@
                 <h2 class="chapter__title">Wereldstad in de Heuvels</h2>
                 <div class="chapter__grid">
                     <div class="media-frame media-frame--narrow media-frame--mask-4">
-                        <video class="media-frame__media" width="720" height="406" loop muted playsinline preload="none" data-poster="assets/video/Bakkerij.jpg" data-lazy-video>
+                        <video disableremoteplayback x-webkit-airplay="deny" class="media-frame__media" width="720" height="406" loop muted playsinline preload="none" data-poster="assets/video/Bakkerij.jpg" data-lazy-video>
                             <source src="assets/video/Bakkerij.mp4" type="video/mp4">
                         </video>
                     </div>
@@ -419,7 +419,7 @@
                 <div class="chapter__grid">
                     <p class="chapter__text">De mijnen gaan dicht. De laatste lift gaat omhoog en de koeltorens worden afgebroken, maar de mensen blijven hier wonen. De nieuwkomers van vroeger zijn nu de opa’s van de stad geworden. Ook al zijn de mijnen nu gesloten, de sfeer van de mijnwerkers merk je nog steeds. Het is een mix geworden van Limburgse trots en invloeden uit de hele wereld. De stad is voorgoed veranderd.</p>
                     <div class="media-frame media-frame--narrow media-frame--mask-1">
-                        <video class="media-frame__media" width="688" height="464" loop muted playsinline preload="none" data-poster="assets/video/Hema-Heerlen.jpg" data-lazy-video>
+                        <video disableremoteplayback x-webkit-airplay="deny" class="media-frame__media" width="688" height="464" loop muted playsinline preload="none" data-poster="assets/video/Hema-Heerlen.jpg" data-lazy-video>
                             <source src="assets/video/Hema-Heerlen.mp4" type="video/mp4">
                         </video>
                     </div>
@@ -453,7 +453,7 @@
                 <div class="chapter__grid">
                     <p class="chapter__text">Diep onder de grond is gevaar geen tekst in een handboek, maar de lucht die je inademt. Omdat je het dodelijke, reukloze <button type="button" class="term" data-term="koolmonoxide">koolmonoxide</button> niet kunt zien of ruiken, is het felgele vogeltje in zijn kooitje je allerbelangrijkste levenslijn. Zolang de kanarie fluit of onrustig rondhopt, is de lucht veilig, maar zodra het beestje van zijn stokje valt, telt elke seconde om weg te komen voor de onzichtbare dood toeslaat. In deze duisternis betekent arbeidscultuur dat je je leven letterlijk toevertrouwt aan de man naast je; je bent geen collega's, je bent elkaars overlevingsgarantie.</p>
                     <div class="media-frame media-frame--narrow media-frame--mask-2" data-lamp>
-                        <video class="media-frame__media" width="720" height="398" loop muted playsinline preload="none" data-poster="assets/video/Kanari.jpg" data-lazy-video>
+                        <video disableremoteplayback x-webkit-airplay="deny" class="media-frame__media" width="720" height="398" loop muted playsinline preload="none" data-poster="assets/video/Kanari.jpg" data-lazy-video>
                             <source src="assets/video/Kanari.mp4" type="video/mp4">
                         </video>
                         <button type="button" class="audio-btn audio-btn--overlay" data-action="audio" data-audio="kanarie-audio" aria-label="Speel kanarie geluid af" aria-pressed="false">
@@ -625,7 +625,7 @@
                 <h2 class="chapter__title">De Auto gaat de Stad uit</h2>
                 <div class="chapter__grid">
                     <div class="media-frame media-frame--mask-3">
-                        <video class="media-frame__media" width="560" height="560" loop muted playsinline preload="none" data-poster="assets/video/Promenade.jpg" data-lazy-video>
+                        <video disableremoteplayback x-webkit-airplay="deny" class="media-frame__media" width="560" height="560" loop muted playsinline preload="none" data-poster="assets/video/Promenade.jpg" data-lazy-video>
                             <source src="assets/video/Promenade.mp4" type="video/mp4">
                         </video>
                     </div>
@@ -674,7 +674,7 @@
                 <div class="chapter__grid">
                     <p class="chapter__text">Het dieptepunt wordt bereikt: na het faillissement van V&amp;D <strong>sluit het warenhuis zijn deuren</strong>. Het enorme pand aan de Promenade blijft leeg en grijs achter. Terwijl de gemeente zich focust op het nieuwe <strong>Maankwartier</strong> bij het station, een kunstzinnig gebied ontworpen door kunstenaar Michel Huisman, blijft de Promenade achter in een staat van verloedering. De "trots van Heerlen" is veranderd in een zorgenkindje.</p>
                     <div class="media-frame media-frame--mask-1">
-                        <video class="media-frame__media" width="640" height="360" loop muted playsinline preload="none" data-poster="assets/video/maankwartier-2016.jpg" data-lazy-video>
+                        <video disableremoteplayback x-webkit-airplay="deny" class="media-frame__media" width="640" height="360" loop muted playsinline preload="none" data-poster="assets/video/maankwartier-2016.jpg" data-lazy-video>
                             <source src="assets/video/maankwartier-2016.mp4" type="video/mp4">
                         </video>
                     </div>
@@ -728,7 +728,7 @@
             </button>
         </form>
         <div class="media-frame video-dialog__frame">
-            <video id="molenberg-video" class="media-frame__media" width="688" height="464" loop muted playsinline preload="none" data-poster="assets/video/Molenberg.jpg">
+            <video disableremoteplayback x-webkit-airplay="deny" id="molenberg-video" class="media-frame__media" width="688" height="464" loop muted playsinline preload="none" data-poster="assets/video/Molenberg.jpg">
                 <source src="assets/video/Molenberg.mp4" type="video/mp4">
             </video>
         </div>

@@ -7,6 +7,8 @@
    =========================================== */
 
 const NARRATION_SPEEDS = [1, 0.85, 1.15];
+// Adempauze tussen twee hoofdstukken bij 'Lees voor' (bij tempo 'rustig' iets langer)
+const CHAPTER_PAUSE = 2500;
 const SPEED_LABELS = { 1: 'Tempo: normaal', 0.85: 'Tempo: rustig', 1.15: 'Tempo: vlot' };
 
 const ICONS = {
@@ -24,6 +26,8 @@ const narrator = {
     speed: 1,
     story: null,       // verhaal dat nu open is
     panel: null,
+    waiting: false,    // in de adempauze vóór het volgende hoofdstuk
+    pauseTimer: null,
 };
 narrator.audio.preload = 'none';
 
@@ -33,16 +37,26 @@ const chapterTitle = (chapter) => chapter.querySelector('.chapter__title').textC
 // AFSPELEN
 // ===========================================
 
+// Maakt een hoofdstuk het huidige (opname klaarzetten + oplichten), zonder af te spelen
+function selectChapter(chapter) {
+    if (narrator.chapter === chapter) return;
+    narrator.chapter?.classList.remove('is-narrating');
+    narrator.chapter = chapter;
+    narrator.audio.src = chapter.dataset.narration;
+    chapter.classList.add('is-narrating');
+}
+
+function cancelPause() {
+    clearTimeout(narrator.pauseTimer);
+    narrator.waiting = false;
+}
+
 function playChapter(chapter, { readAll = narrator.readAll } = {}) {
     // Andere geluiden (kanarie, feest, toespraak) stoppen; er speelt altijd maar één geluid
     if (typeof stopAllAudio === 'function') stopAllAudio();
 
-    if (narrator.chapter !== chapter) {
-        narrator.chapter?.classList.remove('is-narrating');
-        narrator.chapter = chapter;
-        narrator.audio.src = chapter.dataset.narration;
-        chapter.classList.add('is-narrating');
-    }
+    cancelPause();
+    selectChapter(chapter);
     narrator.readAll = readAll;
     narrator.audio.playbackRate = narrator.speed;
     narrator.audio.play().catch(() => render());
@@ -51,11 +65,13 @@ function playChapter(chapter, { readAll = narrator.readAll } = {}) {
 }
 
 function pauseNarration() {
+    cancelPause();
     narrator.audio.pause();
     render();
 }
 
 function stopNarration() {
+    cancelPause();
     narrator.audio.pause();
     narrator.audio.removeAttribute('src');
     narrator.audio.load();
@@ -71,11 +87,28 @@ function nextChapter(from = narrator.chapter) {
     return next;
 }
 
+function scrollToChapter(chapter) {
+    chapter.scrollIntoView({ behavior: prefersReducedMotion.matches ? 'instant' : 'smooth', block: 'start' });
+}
+
 function playNext() {
     const next = nextChapter();
     if (!next) return stopNarration();
-    next.scrollIntoView({ behavior: prefersReducedMotion.matches ? 'instant' : 'smooth', block: 'start' });
+    scrollToChapter(next);
     playChapter(next);
+}
+
+// Einde van een hoofdstuk bij 'Lees voor': eerst rustig naar het volgende scrollen,
+// even laten staan (jaartal en titel in beeld), dan pas verder vertellen
+function continueAfterPause() {
+    const next = nextChapter();
+    if (!next) return stopNarration();
+    selectChapter(next);
+    scrollToChapter(next);
+    narrator.waiting = true;
+    narrator.pauseTimer = setTimeout(() => playChapter(next), CHAPTER_PAUSE / narrator.speed);
+    updateMediaSession(next);
+    render();
 }
 
 // Het hoofdstuk dat je nu leest: het eerste dat nog een flink stuk in beeld is
@@ -102,7 +135,8 @@ function createListenButton(chapter) {
     btn.setAttribute('aria-label', `Luister naar: ${chapterTitle(chapter)}`);
     btn.innerHTML = `${ICONS.speaker}<span class="listen-btn__label">Luister</span>`;
     btn.addEventListener('click', () => {
-        if (narrator.chapter === chapter && !narrator.audio.paused) pauseNarration();
+        const busy = !narrator.audio.paused || narrator.waiting;
+        if (narrator.chapter === chapter && busy) pauseNarration();
         else playChapter(chapter, { readAll: narrator.chapter === chapter && narrator.readAll });
     });
     meta.append(btn);
@@ -126,7 +160,7 @@ function createPanel() {
         const action = event.target.closest('[data-narrator]')?.dataset.narrator;
         if (action === 'toggle') {
             if (!narrator.chapter) playChapter(chapterInView(), { readAll: true });
-            else if (narrator.audio.paused) playChapter(narrator.chapter);
+            else if (narrator.audio.paused && !narrator.waiting) playChapter(narrator.chapter);
             else pauseNarration();
         } else if (action === 'next') {
             playNext();
@@ -143,7 +177,8 @@ function createPanel() {
 
 function render() {
     const { panel, chapter, audio } = narrator;
-    const playing = Boolean(chapter) && !audio.paused;
+    // Tijdens de adempauze telt de speler als 'bezig' (pauzeknop stopt dan het doorgaan)
+    const playing = Boolean(chapter) && (!audio.paused || narrator.waiting);
     const active = Boolean(chapter);
 
     panel.hidden = !narrator.story;
@@ -196,7 +231,7 @@ function initNarration() {
     initMediaSession();
 
     narrator.audio.addEventListener('ended', () => {
-        if (narrator.readAll) playNext();
+        if (narrator.readAll) continueAfterPause();
         else stopNarration();
     });
     narrator.audio.addEventListener('play', render);
