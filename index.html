@@ -613,14 +613,14 @@
         </article>
     </main>
 
-    <!-- TIMELINE SIDEBAR (decoratief: toont scrollvoortgang) -->
+    <!-- TIJDLIJN als mijnschacht (decoratief): de kooi zakt mee met het lezen.
+         Markers per hoofdstuk worden door js/effects.js geplaatst. -->
     <div id="timeline-ui" class="timeline" aria-hidden="true" hidden>
         <div class="timeline__fill"></div>
-        <span class="timeline__marker" data-pos="10"></span>
-        <span class="timeline__marker" data-pos="30"></span>
-        <span class="timeline__marker" data-pos="50"></span>
-        <span class="timeline__marker" data-pos="70"></span>
-        <span class="timeline__marker" data-pos="90"></span>
+        <div class="timeline__cage">
+            <span class="timeline__depth">0 M</span>
+            <span class="timeline__year"></span>
+        </div>
     </div>
 
     <!-- VIDEO POPUP (Molenberg) -->

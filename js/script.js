@@ -10,7 +10,6 @@ const startBtn = document.getElementById('start-btn');
 const steenkoolVideo = document.getElementById('steenkool-video');
 const skipBtn = document.getElementById('skip-video-btn');
 const timeline = document.getElementById('timeline-ui');
-const timelineMarkers = timeline.querySelectorAll('.timeline__marker');
 const audioButtons = document.querySelectorAll('[data-action="audio"]');
 const videoDialog = document.getElementById('video-dialog');
 const molenbergVideo = document.getElementById('molenberg-video');
@@ -81,12 +80,11 @@ function showView(id, { history: mode = 'push' } = {}) {
     }
 
     window.scrollTo({ top: 0, behavior: 'instant' });
-    updateProgress();
 
     // Focus mee verplaatsen, anders blijft die achter op een knop die nu verborgen is
     target.focus({ preventScroll: true });
 
-    // Andere scripts (effects.js, progress.js, ...) reageren hierop
+    // Andere scripts reageren hierop (effects.js: tijdlijn/diepte, kolenstof, ...)
     document.dispatchEvent(new CustomEvent('viewchange', { detail: { id, view: target } }));
 }
 
@@ -188,25 +186,6 @@ function openVideoDialog() {
     videoDialog.showModal();
     molenbergVideo.currentTime = 0;
     molenbergVideo.play().catch(() => {});
-}
-
-// ===========================================
-// SCROLL PROGRESS
-// ===========================================
-
-let progressQueued = false;
-
-function updateProgress() {
-    progressQueued = false;
-    if (timeline.hidden) return;
-
-    const scrollable = document.documentElement.scrollHeight - window.innerHeight;
-    const scrolled = scrollable > 0 ? (window.scrollY / scrollable) * 100 : 0;
-    timeline.style.setProperty('--progress', (scrolled / 100).toFixed(4));
-
-    timelineMarkers.forEach((marker) => {
-        marker.classList.toggle('is-active', scrolled >= marker.dataset.pos - 5);
-    });
 }
 
 // ===========================================
@@ -394,13 +373,6 @@ window.addEventListener('popstate', (event) => {
     }
 });
 
-window.addEventListener('scroll', () => {
-    if (progressQueued) return;
-    progressQueued = true;
-    requestAnimationFrame(updateProgress);
-}, { passive: true });
-
-timelineMarkers.forEach((marker) => { marker.style.top = `${marker.dataset.pos}%`; });
 views.forEach((view) => { view.tabIndex = -1; });
 
 initLazyVideos();

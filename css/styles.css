@@ -801,12 +801,51 @@ button {
     transition: transform 0.1s ease-out;
 }
 
+/* "Afdalen in de mijn": diepte + jaartal. Mobiel een label linksboven (naast de home-knop),
+   vanaf tablet een liftkooi die langs de schacht zakt. */
+.timeline__cage {
+    position: fixed;
+    top: 1.6rem;
+    left: 1rem;
+    display: flex;
+    align-items: baseline;
+    gap: 0.5rem;
+    padding: 0.4rem 0.8rem;
+    border-radius: 999px;
+    background: rgb(16 16 16 / 0.8);
+    font-family: var(--font-display);
+    font-size: 0.85rem;
+    line-height: 1;
+    color: var(--accent);
+    opacity: 0;
+    transition: opacity 0.4s ease;
+}
+
+.timeline.is-scrolling .timeline__cage {
+    opacity: 1;
+}
+
+.timeline__depth::before {
+    content: '';
+    display: inline-block;
+    margin-right: 0.35em;
+    border: 0.3em solid transparent;
+    border-top-color: currentColor;
+    border-bottom: 0;
+    vertical-align: 0.1em;
+}
+
+.timeline__year {
+    color: var(--color-text);
+}
+
 .timeline__marker {
     display: none;
     position: absolute;
     left: -0.5625rem;
     width: 1.25rem;
     height: 1.25rem;
+    margin-top: -0.625rem;
     background: var(--color-bg);
     border: 3px solid var(--color-line);
     transform: rotate(45deg);
@@ -837,6 +876,63 @@ button {
     .timeline__marker {
         display: block;
     }
+
+    .timeline__cage {
+        position: absolute;
+        top: 0;
+        left: 0;
+        z-index: 1;
+        display: block;
+        padding: 0;
+        background: none;
+        opacity: 1;
+        transform: translateY(calc(var(--progress, 0) * 100vh));
+        transition: transform 0.1s ease-out;
+    }
+
+    /* De liftkooi zelf */
+    .timeline__cage::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 1px;
+        width: 0.875rem;
+        height: 1.125rem;
+        transform: translate(-50%, -50%);
+        border: 2px solid var(--accent);
+        border-radius: 2px;
+        background: var(--color-bg);
+        box-shadow: 0 0 12px rgb(var(--accent-rgb) / 0.7);
+    }
+
+    .timeline__depth,
+    .timeline__year {
+        position: absolute;
+        left: 1rem;
+        white-space: nowrap;
+    }
+
+    .timeline__depth {
+        top: -0.95rem;
+        font-size: 0.75rem;
+    }
+
+    .timeline__year {
+        top: 0.2rem;
+        font-family: var(--font-body);
+        font-size: 0.7rem;
+        color: rgb(241 239 238 / 0.7);
+    }
+}
+
+/* --- Kolenstof (canvas achter de content, getekend door js/effects.js) --- */
+.dust {
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
 }
 
 /* --- Video popup --- */
