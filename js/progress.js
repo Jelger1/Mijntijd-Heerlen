@@ -136,7 +136,7 @@ function renderProgress() {
 
 function initProgress() {
     // Voortgang in het keuzemenu (met wis-knop) en aan het eind van de drie verhalen
-    document.querySelector('.hub .theme-grid').after(createProgressBlock({ withReset: true }));
+    document.querySelector('.hub .theme-list').after(createProgressBlock({ withReset: true }));
     Object.keys(DIPLOMA_STORIES).forEach((id) => {
         document.querySelector(`#story-${id} .outro__title`).after(createProgressBlock({ withReset: false }));
     });

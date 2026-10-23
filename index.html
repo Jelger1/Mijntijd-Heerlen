@@ -41,6 +41,9 @@
 
     <!-- Iconen: één keer gedefinieerd, hergebruikt via <use> -->
     <svg hidden>
+        <symbol id="icon-pickaxes" viewBox="0 0 183 166">
+            <polygon points="113.75 102.28 163.73 149.94 151.02 165.02 89.89 102.93 31.81 163.12 18.6 147.21 49.72 118.01 51.73 118.39 51.44 116.48 77.77 90.62 41.58 53.86 21.98 78.42 0 60.32 9.52 50.52 11.04 51.08 10.61 49.41 58.6 0 76.91 21.76 55.88 40.23 54.51 40.03 54.51 41.44 52.14 43.52 89.48 79.13 125.93 43.33 116.26 33.27 117.03 30.88 114.45 31.74 103.63 22.17 123.92 2.54 144.89 24.27 148.82 20.44 159.16 30.88 156.1 34.61 168.47 50.18 166.05 56.16 170.84 54.24 182.33 80.29 145.56 63.34 137.52 53.57 101.65 90.74 113.07 101.63 112.85 102.62 113.75 102.28"/>
+        </symbol>
         <symbol id="icon-home" viewBox="0 0 377.22 351.84">
             <polygon points="345.94 119.46 288.59 131.82 285.31 307.42 270.56 324.99 186.98 324.99 178.14 272.92 161.56 272.92 146.93 278.9 140.47 324.99 82.09 324.99 82.09 166.88 31.28 148.86 110.67 95.46 107.77 28.56 124.7 29.41 138.37 76.81 223.03 19.86 345.94 119.46"/>
         </symbol>
@@ -77,27 +80,68 @@
             </button>
         </section>
 
-        <!-- THEMA NAVIGATOR -->
+        <!-- THEMA NAVIGATOR: een doorsnede van de grond. Bovenin is het nu; hoe dieper je graaft, hoe verder terug in de tijd -->
         <section id="navigator" class="hub" data-view hidden>
-            <h1 class="hub__title">GRAAF IN HET MIJNVERLEDEN VAN HEERLEN</h1>
-            <div class="theme-grid">
-                <button type="button" class="img-btn theme-btn" data-theme="welvaart" data-action="story" data-story="welvaart">
-                    <img src="assets/knop-Welvaart.svg" alt="Welvaart" width="300" height="164">
-                </button>
-                <button type="button" class="img-btn theme-btn" data-theme="migratie" data-action="story" data-story="migratie">
-                    <img src="assets/knop-migratie.svg" alt="Migratie" width="300" height="164">
-                </button>
-                <button type="button" class="img-btn theme-btn" data-theme="cultuur" data-action="story" data-story="cultuur">
-                    <img src="assets/knop-Cultuur.svg" alt="Cultuur" width="300" height="164">
-                </button>
-            </div>
+            <header class="hub__header">
+                <h1 class="hub__title">GRAAF IN HET MIJNVERLEDEN VAN HEERLEN</h1>
+                <p class="hub__lead">Kies een laag en graaf terug in de tijd</p>
+                <ul class="how-to">
+                    <li><svg class="how-to__icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9v6h4l5 4V5L8 9z"/><path d="M16 8.5a5 5 0 0 1 0 7M18.5 6a8.5 8.5 0 0 1 0 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>Lees zelf of laat voorlezen</li>
+                    <li><svg class="how-to__icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4.5"/><circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="2" opacity=".5"/></svg>Tik op foto's en woorden</li>
+                    <li><svg class="how-to__icon" viewBox="0 0 183 166" aria-hidden="true"><use href="#icon-pickaxes"/></svg>Verdien je houwersdiploma</li>
+                </ul>
+            </header>
 
-            <!-- Ga Terug in Tijd knop -->
-            <div class="hub__back" data-theme="prehistory">
-                <p class="hub__question">Eerst weten wat eraan vooraf ging?</p>
-                <button type="button" class="img-btn hub__back-btn" data-action="prehistory">
-                    <img src="assets/GA-TERUG-IN-TIJD.svg" alt="Ga terug in tijd" width="300" height="169">
-                </button>
+            <div class="strata">
+                <!-- Bovenste laag: na de mijnen. Daar kom je 'boven' aan het eind van elk verhaal -->
+                <section class="layer layer--surface" data-theme="val" aria-labelledby="layer-na">
+                    <p class="layer__years">1955 – nu</p>
+                    <h2 id="layer-na" class="layer__title">Na de mijnen</h2>
+                    <p class="layer__text">De sluiting, de Promenade en een nieuwe toekomst.</p>
+                    <p class="layer__note"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4l7 8h-4.5v8h-5v-8H5z"/></svg>Hier kom je boven aan het eind van elk verhaal</p>
+                </section>
+
+                <!-- De kolenlaag: de mijntijd met de drie thema's -->
+                <section class="layer layer--coal" aria-labelledby="layer-mijntijd">
+                    <p class="layer__years">1894 – 1974</p>
+                    <h2 id="layer-mijntijd" class="layer__title">De mijntijd</h2>
+                    <div class="theme-list">
+                        <button type="button" class="theme-btn theme-card" data-theme="welvaart" data-action="story" data-story="welvaart">
+                            <span class="theme-card__stone"><img src="assets/knop-Welvaart.svg" alt="Welvaart" width="300" height="164"></span>
+                            <span class="theme-card__body">
+                                <span class="theme-card__text">Hoe het zwarte goud van een boerendorp de rijkste stad van Nederland maakte.</span>
+                                <span class="theme-card__meta">1894 – 1955 · 6 hoofdstukken · ± 3 min luisteren</span>
+                            </span>
+                        </button>
+                        <button type="button" class="theme-btn theme-card" data-theme="migratie" data-action="story" data-story="migratie">
+                            <span class="theme-card__stone"><img src="assets/knop-migratie.svg" alt="Migratie" width="300" height="164"></span>
+                            <span class="theme-card__body">
+                                <span class="theme-card__text">Hoe duizenden nieuwkomers van een dorp een wereldstad in de heuvels maakten.</span>
+                                <span class="theme-card__meta">1899 – 1974 · 5 hoofdstukken · ± 2,5 min luisteren</span>
+                            </span>
+                        </button>
+                        <button type="button" class="theme-btn theme-card" data-theme="cultuur" data-action="story" data-story="cultuur">
+                            <span class="theme-card__stone"><img src="assets/knop-Cultuur.svg" alt="Mijncultuur" width="300" height="164"></span>
+                            <span class="theme-card__body">
+                                <span class="theme-card__text">Leven en werken onder de grond: van de kanarie tot de schaf.</span>
+                                <span class="theme-card__meta">1910 – 1952 · 6 hoofdstukken · ± 3 min luisteren</span>
+                            </span>
+                        </button>
+                    </div>
+                </section>
+
+                <!-- Diepste laag: voor de mijnen (de hele laag is aanklikbaar) -->
+                <section class="layer layer--deep" data-theme="prehistory" aria-labelledby="layer-voor">
+                    <div class="layer__body">
+                        <p class="layer__years">± 10 – 1900</p>
+                        <h2 id="layer-voor" class="layer__title">Voor de mijnen</h2>
+                        <p class="layer__text">Romeinen, een vergeten badhuis en een rustig boerendorp.</p>
+                        <p class="layer__meta">6 hoofdstukken · ± 4 min luisteren</p>
+                    </div>
+                    <button type="button" class="layer__dig" data-action="prehistory">
+                        <img src="assets/GA-TERUG-IN-TIJD.svg" alt="Ga verder terug in de tijd: Voor de mijnen" width="300" height="169">
+                    </button>
+                </section>
             </div>
         </section>
 
