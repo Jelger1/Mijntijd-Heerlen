@@ -34,6 +34,7 @@
     <script src="js/effects.js" defer></script>
     <script src="js/canary-game.js" defer></script>
     <script src="js/discover.js" defer></script>
+    <script src="js/progress.js" defer></script>
 </head>
 <body>
 
@@ -729,6 +730,24 @@
             <video id="molenberg-video" class="media-frame__media" width="688" height="464" loop muted playsinline preload="none" data-poster="assets/video/Molenberg.jpg">
                 <source src="assets/video/Molenberg.mp4" type="video/mp4">
             </video>
+        </div>
+    </dialog>
+
+    <!-- HOUWERSDIPLOMA: na het lezen van de drie verhalen (js/progress.js) -->
+    <dialog id="diploma-dialog" class="diploma-dialog" aria-labelledby="diploma-title">
+        <form method="dialog">
+            <button class="diploma-dialog__close" aria-label="Sluiten">
+                <img src="assets/kruis.svg" alt="" width="32" height="22">
+            </button>
+        </form>
+        <h2 id="diploma-title" class="diploma-dialog__title">Jouw houwersdiploma</h2>
+        <p class="diploma-dialog__intro">Je hebt het mijnverleden van Heerlen doorgraven. Vul je naam in en bewaar je diploma.</p>
+        <label class="diploma-dialog__label" for="diploma-name">Jouw naam</label>
+        <input id="diploma-name" class="diploma-dialog__input" type="text" maxlength="40" autocomplete="name" placeholder="Bijvoorbeeld: Jan Koempel">
+        <canvas class="diploma-dialog__canvas" width="1200" height="850" role="img" aria-label="Voorbeeld van je houwersdiploma"></canvas>
+        <div class="diploma-dialog__actions">
+            <button type="button" class="game-btn" data-diploma="download">Download diploma</button>
+            <button type="button" class="game-btn game-btn--ghost" data-diploma="share" hidden>Delen</button>
         </div>
     </dialog>
 
