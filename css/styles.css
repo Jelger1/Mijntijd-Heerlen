@@ -704,6 +704,186 @@ button {
     }
 }
 
+/* --- Tellers ("6.300 inwoners"): kolenbrok met gestapelde lagen, naar Inwoners-1899.svg --- */
+.chapter__body {
+    display: grid;
+    gap: 2rem;
+    justify-items: start;
+}
+
+.stat {
+    position: relative;
+    display: inline-grid;
+    justify-items: center;
+    margin: 0.5rem 0 0;
+    padding: 1.25rem 2.25rem 1.1rem;
+}
+
+/* De brok zelf; de lagen ontstaan door gestapelde schaduwen in de grijzen van Kanari.png */
+.stat__rock {
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    filter:
+        drop-shadow(5px -4px 0 #e4e4e4)
+        drop-shadow(5px -4px 0 #b4b4b4)
+        drop-shadow(5px -4px 0 #847e84)
+        drop-shadow(5px -4px 0 #544e4e);
+}
+
+.stat__rock::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: #231f20;
+    clip-path: polygon(3% 10%, 28% 0, 66% 7%, 100% 3%, 95% 52%, 100% 96%, 62% 100%, 24% 93%, 0 100%, 4% 52%);
+}
+
+.stat__value {
+    font-family: var(--font-display);
+    font-size: clamp(2.75rem, 2rem + 3vw, 4rem);
+    line-height: 1;
+    color: var(--accent);
+    font-variant-numeric: tabular-nums;
+}
+
+.stat__label {
+    margin-top: 0.35rem;
+    font-family: var(--font-display);
+    font-size: 0.8rem;
+    line-height: 1;
+    color: var(--color-text);
+}
+
+/* --- Bevolkingsgrafiek (lijn tekent zich bij in beeld komen) --- */
+.pop-chart {
+    margin: 3rem 0 0;
+    padding: 1.25rem 1rem 1rem;
+    background: var(--color-surface);
+}
+
+.pop-chart__title {
+    margin-bottom: 0.75rem;
+    font-size: 1.1rem;
+    line-height: 1.2;
+    color: var(--accent);
+}
+
+.pop-chart__svg {
+    width: 100%;
+    height: auto;
+    overflow: visible;
+    font-family: var(--font-body);
+}
+
+.pop-chart__grid line {
+    stroke: var(--color-line);
+    stroke-width: 1;
+}
+
+.pop-chart__axis {
+    font-size: 12px;
+    fill: rgb(241 239 238 / 0.6);
+}
+
+.pop-chart__event line {
+    stroke: rgb(241 239 238 / 0.35);
+    stroke-width: 1.5;
+    stroke-dasharray: 4 4;
+}
+
+.pop-chart__event text {
+    font-family: var(--font-display);
+    font-size: 13px;
+    fill: rgb(241 239 238 / 0.8);
+}
+
+.pop-chart__area {
+    fill: rgb(var(--accent-rgb) / 0.15);
+    transition: opacity 0.8s ease 0.8s;
+}
+
+.pop-chart__line {
+    fill: none;
+    stroke: var(--accent);
+    stroke-width: 3.5;
+    stroke-linejoin: round;
+    stroke-linecap: round;
+    filter: drop-shadow(0 0 6px rgb(var(--accent-rgb) / 0.7));
+    transition: stroke-dashoffset 1.5s ease-in-out;
+}
+
+.pop-chart__points circle {
+    fill: var(--accent);
+    stroke: var(--color-bg);
+    stroke-width: 2;
+}
+
+.pop-chart__note {
+    font-family: var(--font-display);
+    font-size: 15px;
+    fill: var(--color-text);
+}
+
+.pop-chart__note--peak {
+    font-size: 18px;
+    fill: var(--accent);
+}
+
+.pop-chart__points,
+.pop-chart__note {
+    transition: opacity 0.5s ease 1.3s;
+}
+
+.pop-chart__caption {
+    margin-top: 0.5rem;
+    font-size: 0.75rem;
+    color: rgb(241 239 238 / 0.6);
+}
+
+/* Bij onthullen: lijn tekent zich, daarna vlak en punten */
+.has-reveal .pop-chart[data-reveal] .pop-chart__line {
+    stroke-dasharray: 1;
+    stroke-dashoffset: 1;
+}
+
+.has-reveal .pop-chart[data-reveal].is-revealed .pop-chart__line {
+    stroke-dashoffset: 0;
+}
+
+.has-reveal .pop-chart[data-reveal] :is(.pop-chart__area, .pop-chart__points, .pop-chart__note) {
+    opacity: 0;
+}
+
+.has-reveal .pop-chart[data-reveal].is-revealed :is(.pop-chart__area, .pop-chart__points, .pop-chart__note) {
+    opacity: 1;
+}
+
+/* De SVG schaalt mee met de breedte: op telefoons de tekst in de grafiek groter maken */
+@media (max-width: 47.99em) {
+    .pop-chart__axis {
+        font-size: 20px;
+    }
+
+    .pop-chart__event text {
+        font-size: 19px;
+    }
+
+    .pop-chart__note {
+        font-size: 24px;
+    }
+
+    .pop-chart__note--peak {
+        font-size: 28px;
+    }
+}
+
+@media (min-width: 48em) {
+    .pop-chart {
+        padding: 1.75rem 2rem 1.25rem;
+    }
+}
+
 /* --- Woordenboek: mijnwoorden in de tekst (js/discover.js) --- */
 .term {
     position: relative;

@@ -1,6 +1,6 @@
 /* ===========================================
    HEERLEN: DE STORY VAN HET ZWARTE GOUD
-   Visuele effecten: scroll-onthullingen, afdalen in de mijn, kolenstof
+   Visuele effecten: scroll-onthullingen, afdalen in de mijn, kolenstof, tellers, mijnlamp
    (geladen met defer, na script.js)
    =========================================== */
 
@@ -20,6 +20,8 @@ const REVEAL_SELECTOR = [
     '.chapter .media-frame',
     '.chapter__grid > .data-table',
     '.mine-map',
+    '.stat',
+    '.pop-chart',
     '.chart',
     '.audio-player',
     '.canary-game',
@@ -215,6 +217,39 @@ function setDustRunning(on) {
 }
 
 // ===========================================
+// TELLERS ("6.300 inwoners", "+400%")
+// ===========================================
+
+function initCounters() {
+    if (prefersReducedMotion.matches || !('IntersectionObserver' in window)) return;
+    const format = (n) => Math.round(n).toLocaleString('nl-NL');
+
+    const observer = new IntersectionObserver((entries) => {
+        entries.filter((entry) => entry.isIntersecting).forEach(({ target }) => {
+            observer.unobserve(target);
+            const end = Number(target.dataset.count);
+            const { prefix = '', suffix = '' } = target.dataset;
+            const start = performance.now();
+            const duration = 1600;
+
+            const tick = (now) => {
+                const t = Math.min((now - start) / duration, 1);
+                const eased = 1 - (1 - t) ** 3; // snel beginnen, rustig uitlopen
+                target.textContent = `${prefix}${format(end * eased)}${suffix}`;
+                if (t < 1) requestAnimationFrame(tick);
+            };
+            requestAnimationFrame(tick);
+        });
+    }, { threshold: 0.6 });
+
+    // In de HTML staat de eindwaarde (zonder JS klopt het dus ook); hier beginnen we bij 0
+    document.querySelectorAll('.stat__value[data-count]').forEach((el) => {
+        el.textContent = `${el.dataset.prefix ?? ''}0${el.dataset.suffix ?? ''}`;
+        observer.observe(el);
+    });
+}
+
+// ===========================================
 // MIJNLAMP
 // ===========================================
 
@@ -297,5 +332,6 @@ document.fonts?.ready.then(refreshDescent);
 document.addEventListener('visibilitychange', () => setDustRunning(Boolean(activeStory) && !document.hidden));
 
 initLamps();
+initCounters();
 initReveal();
 initDust();
