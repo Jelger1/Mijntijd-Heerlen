@@ -213,6 +213,55 @@ function setDustRunning(on) {
 }
 
 // ===========================================
+// MIJNLAMP
+// ===========================================
+
+const touchOnly = window.matchMedia('(hover: none)');
+
+function initLamps() {
+    document.querySelectorAll('[data-lamp]').forEach((frame) => {
+        const lamp = document.createElement('span');
+        lamp.className = 'lamp';
+        lamp.setAttribute('aria-hidden', 'true');
+
+        const hint = document.createElement('span');
+        hint.className = 'lamp-hint';
+        hint.setAttribute('aria-hidden', 'true');
+        hint.textContent = touchOnly.matches ? 'Tik of sleep met je lamp' : 'Schijn met je muis';
+
+        const toggle = document.createElement('button');
+        toggle.type = 'button';
+        toggle.className = 'lamp-toggle';
+        toggle.setAttribute('aria-pressed', 'false');
+        toggle.innerHTML = '<span>Licht aan</span>';
+
+        frame.append(lamp, hint, toggle);
+
+        let releaseTimer = null;
+        const shine = (event) => {
+            if (event.target.closest('button')) return;
+            const rect = lamp.getBoundingClientRect();
+            lamp.style.setProperty('--lamp-x', `${((event.clientX - rect.left) / rect.width) * 100}%`);
+            lamp.style.setProperty('--lamp-y', `${((event.clientY - rect.top) / rect.height) * 100}%`);
+            frame.classList.add('is-lamp-active');
+            clearTimeout(releaseTimer);
+        };
+
+        frame.addEventListener('pointermove', shine);
+        frame.addEventListener('pointerdown', shine);
+        // Na loslaten kijkt de lamp na een tijdje weer zelf rond
+        frame.addEventListener('pointerleave', () => {
+            releaseTimer = setTimeout(() => frame.classList.remove('is-lamp-active'), 2500);
+        });
+
+        toggle.addEventListener('click', () => {
+            const lit = frame.classList.toggle('is-lit');
+            toggle.setAttribute('aria-pressed', String(lit));
+        });
+    });
+}
+
+// ===========================================
 // INITIALISATIE
 // ===========================================
 
@@ -245,5 +294,6 @@ document.fonts?.ready.then(refreshDescent);
 
 document.addEventListener('visibilitychange', () => setDustRunning(Boolean(activeStory) && !document.hidden));
 
+initLamps();
 initReveal();
 initDust();

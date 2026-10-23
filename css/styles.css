@@ -587,6 +587,110 @@ button {
     --strata: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 -9 106 109' preserveAspectRatio='none'%3E%3Cpolygon fill='%231e1e1e' points='11.00,-6.00 46.00,-1.00 76.00,-6.00 101.00,-1.00 98.00,16.00 103.00,41.00 99.00,66.00 103.00,83.00 71.00,88.00 41.00,84.00 14.00,88.00 9.00,71.00 13.00,41.00 9.00,11.00 11.00,-6.00'/%3E%3Cpolygon fill='%23544e4e' points='9.80,-4.20 44.80,0.80 74.80,-4.20 99.80,0.80 96.80,17.80 101.80,42.80 97.80,67.80 101.80,84.80 69.80,89.80 39.80,85.80 12.80,89.80 7.80,72.80 11.80,42.80 7.80,12.80 9.80,-4.20'/%3E%3Cpolygon fill='%23847e84' points='8.60,-2.40 43.60,2.60 73.60,-2.40 98.60,2.60 95.60,19.60 100.60,44.60 96.60,69.60 100.60,86.60 68.60,91.60 38.60,87.60 11.60,91.60 6.60,74.60 10.60,44.60 6.60,14.60 8.60,-2.40'/%3E%3Cpolygon fill='%23b4b4b4' points='7.40,-0.60 42.40,4.40 72.40,-0.60 97.40,4.40 94.40,21.40 99.40,46.40 95.40,71.40 99.40,88.40 67.40,93.40 37.40,89.40 10.40,93.40 5.40,76.40 9.40,46.40 5.40,16.40 7.40,-0.60'/%3E%3Cpolygon fill='%23e4e4e4' points='6.20,1.20 41.20,6.20 71.20,1.20 96.20,6.20 93.20,23.20 98.20,48.20 94.20,73.20 98.20,90.20 66.20,95.20 36.20,91.20 9.20,95.20 4.20,78.20 8.20,48.20 4.20,18.20 6.20,1.20'/%3E%3C/svg%3E");
 }
 
+/* --- Mijnlamp: de foto is donker, je muis of vinger is de hoofdlamp ---
+   .lamp, .lamp-hint en .lamp-toggle worden door js/effects.js toegevoegd aan [data-lamp]. */
+@property --lamp-x {
+    syntax: '<percentage>';
+    inherits: false;
+    initial-value: 50%;
+}
+
+@property --lamp-y {
+    syntax: '<percentage>';
+    inherits: false;
+    initial-value: 45%;
+}
+
+[data-lamp] {
+    --lamp-size: 5.5rem;
+    /* Horizontaal slepen beweegt de lamp, verticaal scrollen blijft werken */
+    touch-action: pan-y;
+}
+
+.lamp {
+    position: absolute;
+    inset: 0;
+    z-index: 5;
+    clip-path: var(--shape);
+    background: radial-gradient(
+        circle var(--lamp-size) at var(--lamp-x) var(--lamp-y),
+        rgb(255 230 140 / 0.12) 0%,
+        transparent 50%,
+        rgb(8 8 8 / 0.94) 100%
+    );
+    pointer-events: none;
+    animation: lamp-sway 8s ease-in-out infinite;
+    transition: opacity 0.6s ease;
+}
+
+/* Zodra iemand zelf schijnt, stopt het automatische rondkijken */
+.is-lamp-active .lamp {
+    animation: none;
+}
+
+.is-lit .lamp {
+    opacity: 0;
+}
+
+.lamp-hint {
+    position: absolute;
+    top: 14%;
+    left: 50%;
+    z-index: 6;
+    transform: translateX(-50%);
+    padding: 0.35rem 0.75rem;
+    border-radius: 999px;
+    background: rgb(16 16 16 / 0.75);
+    font-family: var(--font-display);
+    font-size: 0.8rem;
+    line-height: 1;
+    color: var(--accent);
+    white-space: nowrap;
+    pointer-events: none;
+    transition: opacity 0.4s ease;
+}
+
+.is-lamp-active .lamp-hint,
+.is-lit .lamp-hint {
+    opacity: 0;
+}
+
+.lamp-toggle {
+    position: absolute;
+    bottom: 0.375rem;
+    left: 0.375rem;
+    z-index: 10;
+    display: grid;
+    place-items: center;
+    min-width: 3rem;
+    height: 3rem;
+    padding-inline: 0.5rem;
+}
+
+/* Zichtbare pil kleiner dan het raakvlak */
+.lamp-toggle span {
+    padding: 0.4rem 0.7rem;
+    border: 2px solid var(--accent);
+    border-radius: 999px;
+    background: rgb(16 16 16 / 0.8);
+    font-family: var(--font-display);
+    font-size: 0.75rem;
+    line-height: 1;
+    color: var(--accent);
+    white-space: nowrap;
+}
+
+.lamp-toggle[aria-pressed="true"] span {
+    background: var(--accent);
+    color: var(--color-bg);
+}
+
+@media (min-width: 48em) {
+    [data-lamp] {
+        --lamp-size: 7.5rem;
+    }
+}
+
 /* --- Tabellen (hoekig/steen-achtig) --- */
 .data-table {
     max-width: 100%;
@@ -1114,6 +1218,26 @@ button {
     }
     50% {
         filter: drop-shadow(0 0 20px rgb(var(--accent-rgb) / 0.85));
+    }
+}
+
+/* De hoofdlamp kijkt rond zolang niemand hem bestuurt */
+@keyframes lamp-sway {
+    0%, 100% {
+        --lamp-x: 30%;
+        --lamp-y: 42%;
+    }
+    25% {
+        --lamp-x: 60%;
+        --lamp-y: 34%;
+    }
+    50% {
+        --lamp-x: 72%;
+        --lamp-y: 60%;
+    }
+    75% {
+        --lamp-x: 42%;
+        --lamp-y: 66%;
     }
 }
 
