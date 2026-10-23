@@ -131,6 +131,19 @@ button {
     display: none !important;
 }
 
+/* Alleen voor schermlezers */
+.sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    margin: -1px;
+    padding: 0;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+    border: 0;
+}
+
 :focus-visible {
     outline: 3px solid var(--accent);
     outline-offset: 4px;
@@ -691,6 +704,202 @@ button {
     }
 }
 
+/* --- Kanarie-minigame (js/canary-game.js) --- */
+.canary-game {
+    display: grid;
+    gap: 1.5rem;
+    align-items: center;
+    margin-top: 3rem;
+    padding: 1.5rem;
+    border: 2px solid var(--color-line);
+    background: var(--color-surface);
+    clip-path: polygon(0 0, 100% 0, 100% 90%, 94% 100%, 0 100%);
+}
+
+.canary-game__stage {
+    position: relative;
+    width: 100%;
+    max-width: 15rem;
+    margin-inline: auto;
+    aspect-ratio: 16 / 15;
+}
+
+.canary-game__cage {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    fill: none;
+    stroke: #6b6b6b;
+    stroke-width: 3;
+    stroke-linecap: round;
+}
+
+.canary-game__perch {
+    stroke: #8a6a3a;
+    stroke-width: 5;
+}
+
+.canary-game__floor {
+    stroke: #444444;
+}
+
+.canary-game__bird {
+    position: absolute;
+    top: 30%;
+    left: 22%;
+    width: 56%;
+    transform-origin: 50% 50%;
+    transition: transform 0.9s cubic-bezier(0.5, 0, 0.75, 0);
+}
+
+.canary-game__body {
+    fill: var(--accent);
+}
+
+.canary-game__wing,
+.canary-game__tail {
+    fill: var(--accent-dark);
+}
+
+.canary-game__beak {
+    fill: #f4a21d;
+}
+
+.canary-game__eye {
+    fill: var(--color-bg);
+}
+
+.canary-game__legs {
+    stroke: #c9a227;
+    stroke-width: 3;
+    stroke-linecap: round;
+}
+
+.canary-game__notes {
+    position: absolute;
+    top: 8%;
+    right: 4%;
+    display: flex;
+    gap: 0.25rem;
+    font-size: 1.4rem;
+    color: var(--accent);
+    opacity: 0;
+}
+
+.is-singing .canary-game__bird {
+    animation: canary-hop 0.6s ease-in-out infinite;
+}
+
+.is-singing .canary-game__notes {
+    opacity: 1;
+}
+
+.is-singing .canary-game__notes span {
+    animation: canary-note 1.2s ease-out infinite;
+}
+
+.is-singing .canary-game__notes span:nth-child(2) {
+    animation-delay: 0.4s;
+}
+
+.is-singing .canary-game__notes span:nth-child(3) {
+    animation-delay: 0.8s;
+}
+
+/* Van zijn stokje gevallen: ondersteboven op de bodem van de kooi */
+.is-fallen .canary-game__bird {
+    transform: translateY(34%) rotate(160deg);
+}
+
+.canary-game__title {
+    margin-bottom: 0.75rem;
+    font-size: 1.5rem;
+    color: var(--accent);
+}
+
+.canary-game__text {
+    min-height: 4.4em;
+    margin-bottom: 1rem;
+}
+
+.canary-game__actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.canary-game__rounds {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin: 1rem 0 0;
+    padding: 0;
+    list-style: none;
+}
+
+.canary-game__rounds li {
+    padding: 0.3rem 0.6rem;
+    border: 1px solid var(--color-line);
+    font-size: 0.8rem;
+    font-weight: 700;
+}
+
+.canary-game__rounds .is-good {
+    border-color: var(--accent);
+    color: var(--accent);
+}
+
+.canary-game__rounds .is-bad {
+    border-color: #e04a4f;
+    color: #e04a4f;
+}
+
+/* Knoppen voor spelletjes: hoekig, in de themakleur */
+.game-btn {
+    min-height: 3rem;
+    padding: 0.75rem 1.5rem;
+    background: var(--accent);
+    color: var(--color-bg);
+    font-family: var(--font-display);
+    font-size: 1.1rem;
+    line-height: 1;
+    text-transform: uppercase;
+    clip-path: polygon(4% 0, 100% 6%, 96% 100%, 0 92%);
+    transition: transform 0.15s ease, filter 0.15s ease;
+}
+
+.game-btn:active {
+    transform: scale(0.96);
+}
+
+.game-btn--alarm {
+    background: #e04a4f;
+    color: var(--color-text);
+    animation: alarm-pulse 1s ease-in-out infinite;
+}
+
+.game-sound {
+    min-height: 3rem;
+    padding-inline: 0.75rem;
+    color: rgb(241 239 238 / 0.7);
+    font-size: 0.85rem;
+    text-decoration: underline;
+}
+
+.game-sound[aria-pressed="false"] {
+    text-decoration: line-through;
+}
+
+@media (min-width: 48em) {
+    .canary-game {
+        grid-template-columns: minmax(0, 15rem) minmax(0, 1fr);
+        gap: 2.5rem;
+        padding: 2rem 2.5rem;
+    }
+}
+
 /* --- Tabellen (hoekig/steen-achtig) --- */
 .data-table {
     max-width: 100%;
@@ -1218,6 +1427,35 @@ button {
     }
     50% {
         filter: drop-shadow(0 0 20px rgb(var(--accent-rgb) / 0.85));
+    }
+}
+
+@keyframes canary-hop {
+    0%, 100% {
+        transform: translateY(0) rotate(0);
+    }
+    50% {
+        transform: translateY(-4%) rotate(-4deg);
+    }
+}
+
+@keyframes canary-note {
+    from {
+        opacity: 1;
+        transform: translate(0, 0);
+    }
+    to {
+        opacity: 0;
+        transform: translate(0.75rem, -1.5rem);
+    }
+}
+
+@keyframes alarm-pulse {
+    0%, 100% {
+        filter: brightness(1);
+    }
+    50% {
+        filter: brightness(1.35);
     }
 }
 

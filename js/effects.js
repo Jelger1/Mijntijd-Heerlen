@@ -21,6 +21,7 @@ const REVEAL_SELECTOR = [
     '.data-table',
     '.chart',
     '.audio-player',
+    '.canary-game',
     '.outro__title',
     '.outro .theme-btn',
     '.outro__finish',

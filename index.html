@@ -32,6 +32,7 @@
     <link rel="stylesheet" href="css/styles.css">
     <script src="js/script.js" defer></script>
     <script src="js/effects.js" defer></script>
+    <script src="js/canary-game.js" defer></script>
 </head>
 <body>
 
@@ -398,6 +399,37 @@
                         <button type="button" class="audio-btn audio-btn--overlay" data-action="audio" data-audio="kanarie-audio" aria-label="Speel kanarie geluid af" aria-pressed="false">
                             <img src="assets/play-sound-yellow.svg" alt="" width="36" height="36">
                         </button>
+                    </div>
+                </div>
+            <!-- Kanarie-minigame (js/canary-game.js) -->
+                <div class="canary-game" data-canary-game>
+                    <div class="canary-game__stage" aria-hidden="true">
+                        <svg class="canary-game__cage" viewBox="0 0 160 150">
+                            <path d="M20 140 V60 Q80 -10 140 60 V140" />
+                            <path d="M45 140 V38 M80 140 V24 M115 140 V38" />
+                            <path d="M12 140 H148" class="canary-game__floor" />
+                            <path d="M38 98 H122" class="canary-game__perch" />
+                        </svg>
+                        <svg class="canary-game__bird" viewBox="0 0 120 100">
+                            <polygon class="canary-game__tail" points="30,58 6,63 4,72 34,70" />
+                            <polygon class="canary-game__body" points="30,55 45,38 70,35 88,45 92,60 80,74 55,78 38,72" />
+                            <polygon class="canary-game__wing" points="45,50 66,44 80,56 62,66 44,62" />
+                            <polygon class="canary-game__body" points="72,36 78,20 92,16 104,24 104,38 92,46" />
+                            <polygon class="canary-game__beak" points="104,27 117,32 104,37" />
+                            <circle class="canary-game__eye" cx="95" cy="27" r="2.8" />
+                            <path class="canary-game__legs" d="M58 77 L56 90 M68 76 L68 90" />
+                        </svg>
+                        <span class="canary-game__notes"><span>&#9834;</span><span>&#9835;</span><span>&#9834;</span></span>
+                    </div>
+                    <div class="canary-game__panel">
+                        <h3 class="canary-game__title">De kanarietest</h3>
+                        <p class="canary-game__text" aria-live="polite">Koolmonoxide zie en ruik je niet. Je enige alarm is de kanarie: zolang hij fluit, is de lucht veilig. Valt hij stil? Dan moet je direct weg. Hoe snel reageer jij?</p>
+                        <div class="canary-game__actions">
+                            <button type="button" class="game-btn" data-game="start">Start je dienst</button>
+                            <button type="button" class="game-btn game-btn--alarm" data-game="evacuate" hidden>Evacueer!</button>
+                            <button type="button" class="game-sound" data-game="sound" aria-pressed="true">Geluid</button>
+                        </div>
+                        <ol class="canary-game__rounds" aria-label="Resultaten per ronde"></ol>
                     </div>
                 </div>
             </section>
