@@ -85,6 +85,9 @@ function showView(id, { history: mode = 'push' } = {}) {
 
     // Focus mee verplaatsen, anders blijft die achter op een knop die nu verborgen is
     target.focus({ preventScroll: true });
+
+    // Andere scripts (effects.js, progress.js, ...) reageren hierop
+    document.dispatchEvent(new CustomEvent('viewchange', { detail: { id, view: target } }));
 }
 
 function showNavigator() {
@@ -403,11 +406,14 @@ views.forEach((view) => { view.tabIndex = -1; });
 initLazyVideos();
 initSectionAudio();
 
-// Directe link (bijv. .../#migratie) of herladen: meteen die view openen
+// Directe link (bijv. .../#migratie) of herladen: meteen die view openen.
+// Pas bij DOMContentLoaded, zodat de andere scripts hun viewchange-listeners al hebben.
 window.history.scrollRestoration = 'manual';
-const initialView = viewFromHash();
-if (initialView === 'intro') window.history.replaceState({ view: 'intro' }, '');
-else showView(initialView, { history: 'replace' });
+document.addEventListener('DOMContentLoaded', () => {
+    const initialView = viewFromHash();
+    if (initialView === 'intro') window.history.replaceState({ view: 'intro' }, '');
+    else showView(initialView, { history: 'replace' });
+});
 
 // Toon startknop na 5 seconden
 setTimeout(() => startBtn.classList.add('is-visible'), 5000);
