@@ -33,6 +33,7 @@
     <script src="js/script.js" defer></script>
     <script src="js/effects.js" defer></script>
     <script src="js/canary-game.js" defer></script>
+    <script src="js/discover.js" defer></script>
 </head>
 <body>
 
@@ -127,7 +128,7 @@
                 <p class="chapter__date">± 100 – 300 na Christus</p>
                 <h2 class="chapter__title">Het Badhuis Onder de Stad</h2>
                 <div class="chapter__grid">
-                    <p class="chapter__text">Aan het begin van de Tweede Wereldoorlog, in 1940, stuitte Heerlen plotseling op een vergeten wereld. Bij graafwerkzaamheden in het centrum kwam een compleet Romeins badhuis tevoorschijn, dat eeuwenlang verborgen lag onder het zand. Dit was vroeger dé plek om te zien en gezien te worden; na het werk kwamen de inwoners hier samen om te wassen, te roddelen en belangrijke deals te sluiten. Tegenwoordig kun je deze oude 'wellness' nog steeds met eigen ogen bekijken in het Thermenmuseum. Maar na het vertrek van de Romeinen veranderde alles: het ritme, het leven en zelfs het hele landschap...</p>
+                    <p class="chapter__text">Aan het begin van de Tweede Wereldoorlog, in 1940, stuitte Heerlen plotseling op een vergeten wereld. Bij graafwerkzaamheden in het centrum kwam een compleet Romeins badhuis tevoorschijn, dat eeuwenlang verborgen lag onder het zand. Dit was vroeger dé plek om te zien en gezien te worden; na het werk kwamen de inwoners hier samen om te wassen, te roddelen en belangrijke deals te sluiten. Tegenwoordig kun je deze oude 'wellness' nog steeds met eigen ogen bekijken in het <button type="button" class="term" data-term="thermenmuseum">Thermenmuseum</button>. Maar na het vertrek van de Romeinen veranderde alles: het ritme, het leven en zelfs het hele landschap...</p>
                     <div class="media-frame media-frame--mask-2">
                         <video class="media-frame__media" width="640" height="480" loop muted playsinline preload="none" data-poster="assets/video/Opgravingen-1940.jpg" data-lazy-video>
                             <source src="assets/video/Opgravingen-1940.mp4" type="video/mp4">
@@ -200,8 +201,12 @@
                 <p class="chapter__date">1899</p>
                 <h2 class="chapter__title">Van Koeien naar Kolen</h2>
                 <div class="chapter__grid">
-                    <div class="media-frame media-frame--mask-2">
+                    <div class="media-frame media-frame--mask-2" data-hotspots>
                         <img src="assets/Welvaart-Nassau-I.jpg" alt="Oranje-Nassau I" class="media-frame__media" width="700" height="350" loading="lazy" decoding="async">
+                        <button type="button" class="hotspot" style="--x: 29%; --y: 34%" data-info-title="Schachtbokken" data-info-text="De torens boven de schachten. Over de grote wielen liep de kabel die de kooi met mijnwerkers en kolen omhoog en omlaag trok." aria-label="Op de foto: Schachtbokken"></button>
+                        <button type="button" class="hotspot" style="--x: 44%; --y: 18%" data-info-title="Hoge schoorstenen" data-info-text="Stoomketels dreven de machines van de mijn aan. Hun rook ging door deze schoorstenen de lucht in, dag en nacht." aria-label="Op de foto: Hoge schoorstenen"></button>
+                        <button type="button" class="hotspot" style="--x: 78%; --y: 28%" data-info-title="Koeltoren" data-info-text="Hierin koelde het warme water van de mijninstallaties weer af." aria-label="Op de foto: Koeltoren"></button>
+                        <button type="button" class="hotspot" style="--x: 70%; --y: 84%" data-info-title="Het spoor" data-info-text="Zonder rails geen kolen naar buiten (zie 1894). Over het spoor gingen de kolen het land in." aria-label="Op de foto: Het spoor"></button>
                     </div>
                     <p class="chapter__text">Vijf jaar later, met de opening van de Oranje-Nassau I begon de eerste mijn echt te draaien en verdween de landelijke rust voorgoed. Ineens stond daar een gigantische toren die dag en nacht herrie maakte, terwijl lokale boeren nog geen idee hadden hoe ze de kolen uit de grond moesten halen. Daarom haalden de eigenaren experts uit het buitenland, waardoor de straten van Heerlen ineens vol liepen met Duitse en Sloveense "aliens".</p>
                 </div>
@@ -210,7 +215,7 @@
                 <p class="chapter__date">1902</p>
                 <h2 class="chapter__title">De Koninklijke Meesterzet</h2>
                 <div class="chapter__grid">
-                    <p class="chapter__text">Een aantal jaar na de opening van de eerste mijn, begon de regering zich een beetje zorgen te maken. Zij wilde namelijk niet dat buitenlanders de baas werden over onze energie en besloot daarom zelf de 'Staatsmijnen' op te richten. In Heerlen was dit de Emma staatsmijn. Staatsmijnen kregen koninklijke namen, waardoor de mijnprojecten direct "heilig" werden. Niemand durfde namelijk te klagen over stank of lawaai als dat betekende dat je eigenlijk klaagde over de koningin zelf.</p>
+                    <p class="chapter__text">Een aantal jaar na de opening van de eerste mijn, begon de regering zich een beetje zorgen te maken. Zij wilde namelijk niet dat buitenlanders de baas werden over onze energie en besloot daarom zelf de '<button type="button" class="term" data-term="staatsmijnen">Staatsmijnen</button>' op te richten. In Heerlen was dit de Emma staatsmijn. Staatsmijnen kregen koninklijke namen, waardoor de mijnprojecten direct "heilig" werden. Niemand durfde namelijk te klagen over stank of lawaai als dat betekende dat je eigenlijk klaagde over de koningin zelf.</p>
                     <!-- Overzicht Mijnen in Heerlen Tabel -->
                     <div class="data-table">
                         <table>
@@ -282,10 +287,14 @@
                 <p class="chapter__date">1945 - 1955</p>
                 <h2 class="chapter__title">De Wederopbouw</h2>
                 <div class="chapter__grid">
-                    <div class="media-frame media-frame--mask-1">
+                    <div class="media-frame media-frame--mask-1" data-hotspots>
                         <img src="assets/Welvaart-Mijnwerkers-Als-Helden.jpg" alt="Mijnwerkers als Helden" class="media-frame__media" width="552" height="310" loading="lazy" decoding="async">
+                        <button type="button" class="hotspot" style="--x: 43%; --y: 22%" data-info-title="Lamp op de helm" data-info-text="Het enige licht in de pikdonkere gang. De lamp zat op de helm, zodat je je handen vrij had." aria-label="Op de foto: Lamp op de helm"></button>
+                        <button type="button" class="hotspot" style="--x: 62%; --y: 14%" data-info-title="Ondersteuning" data-info-text="Stalen balken houden het dak van de gang omhoog. Zonder ondersteuning kon het gesteente boven je instorten." aria-label="Op de foto: Ondersteuning"></button>
+                        <button type="button" class="hotspot" style="--x: 52%; --y: 45%" data-info-title="Hemd en blote armen" data-info-text="Diep onder de grond was het warm en stoffig." aria-label="Op de foto: Hemd en blote armen"></button>
+                        <button type="button" class="hotspot" style="--x: 15%; --y: 82%" data-info-title="Losgehakte kolen" data-info-text="Wat de houwers loshakten, werd afgevoerd naar de schacht en daar omhoog gehaald." aria-label="Op de foto: Losgehakte kolen"></button>
                     </div>
-                    <p class="chapter__text">Na de Tweede Wereldoorlog lag Nederland in het puin en waren de mijnwerkers als "helden van de arbeid" de enige hoop om het land weer tot leven te wekken. De regering smeekte om brandstof en de koempels werkten zelfs op zondag door tijdens de legendarische "Kolenslag". Ze werden behandeld als topsporters met extra eten en stonden op posters door het hele land: de mijnwerker werkte voor iedereen.</p>
+                    <p class="chapter__text">Na de Tweede Wereldoorlog lag Nederland in het puin en waren de mijnwerkers als "helden van de arbeid" de enige hoop om het land weer tot leven te wekken. De regering smeekte om brandstof en de <button type="button" class="term" data-term="koempel">koempels</button> werkten zelfs op zondag door tijdens de legendarische "<button type="button" class="term" data-term="kolenslag">Kolenslag</button>". Ze werden behandeld als topsporters met extra eten en stonden op posters door het hele land: de mijnwerker werkte voor iedereen.</p>
                 </div>
             </section>
             <section class="chapter outro">
@@ -391,7 +400,7 @@
                 <p class="chapter__date">1910</p>
                 <h2 class="chapter__title">De Kanarie</h2>
                 <div class="chapter__grid">
-                    <p class="chapter__text">Diep onder de grond is gevaar geen tekst in een handboek, maar de lucht die je inademt. Omdat je het dodelijke, reukloze koolmonoxide niet kunt zien of ruiken, is het felgele vogeltje in zijn kooitje je allerbelangrijkste levenslijn. Zolang de kanarie fluit of onrustig rondhopt, is de lucht veilig, maar zodra het beestje van zijn stokje valt, telt elke seconde om weg te komen voor de onzichtbare dood toeslaat. In deze duisternis betekent arbeidscultuur dat je je leven letterlijk toevertrouwt aan de man naast je; je bent geen collega's, je bent elkaars overlevingsgarantie.</p>
+                    <p class="chapter__text">Diep onder de grond is gevaar geen tekst in een handboek, maar de lucht die je inademt. Omdat je het dodelijke, reukloze <button type="button" class="term" data-term="koolmonoxide">koolmonoxide</button> niet kunt zien of ruiken, is het felgele vogeltje in zijn kooitje je allerbelangrijkste levenslijn. Zolang de kanarie fluit of onrustig rondhopt, is de lucht veilig, maar zodra het beestje van zijn stokje valt, telt elke seconde om weg te komen voor de onzichtbare dood toeslaat. In deze duisternis betekent arbeidscultuur dat je je leven letterlijk toevertrouwt aan de man naast je; je bent geen collega's, je bent elkaars overlevingsgarantie.</p>
                     <div class="media-frame media-frame--narrow media-frame--mask-2" data-lamp>
                         <video class="media-frame__media" width="720" height="398" loop muted playsinline preload="none" data-poster="assets/video/Kanari.jpg" data-lazy-video>
                             <source src="assets/video/Kanari.mp4" type="video/mp4">
@@ -437,17 +446,22 @@
                 <p class="chapter__date">1911</p>
                 <h2 class="chapter__title">De Kroning aan het Kolenfront</h2>
                 <div class="chapter__grid">
-                    <div class="media-frame media-frame--mask-3">
+                    <div class="media-frame media-frame--mask-3" data-hotspots>
                         <img src="assets/MijnCultuur-1911.jpg" alt="Houwersdiploma 1911" class="media-frame__media" width="660" height="504" loading="lazy" decoding="async">
+                        <button type="button" class="hotspot" style="--x: 35%; --y: 42%" data-info-title="Diploma van houwer" data-info-text="Met dit diploma was je officieel houwer: de vakman die de kolen loshakt. Wie het had, verdiende meer en kreeg respect." aria-label="Op de foto: Diploma van houwer"></button>
+                        <button type="button" class="hotspot" style="--x: 65%; --y: 57%" data-info-title="Duszynski W." data-info-text="Uitgereikt aan W. Duszynski, geboren op 26 maart 1921. Een Poolse achternaam: veel mijnwerkers kwamen uit Polen (zie Migratie, 1922)." aria-label="Op de foto: Duszynski W."></button>
+                        <button type="button" class="hotspot" style="--x: 52%; --y: 71%" data-info-title="Examen afbouw" data-info-text="Afbouw: het winnen van de kolen uit de kolenlaag, het zwaarste werk onder de grond." aria-label="Op de foto: Examen afbouw"></button>
+                        <button type="button" class="hotspot" style="--x: 34%; --y: 77%" data-info-title="31 december 1951" data-info-text="Dit exemplaar is uitgereikt door de mijn Willem-Sophia in Spekholzerheide (Kerkrade)." aria-label="Op de foto: 31 december 1951"></button>
+                        <button type="button" class="hotspot" style="--x: 85%; --y: 40%" data-info-title="De houwer aan het werk" data-info-text="Knielend in een lage gang, met zijn gereedschap tegen de kolenwand." aria-label="Op de foto: De houwer aan het werk"></button>
                     </div>
-                    <p class="chapter__text">Vanaf 1911 is de mijnwerker niet langer een 'ongeoefende zwoeger', maar een gediplomeerd vakman. Met de invoering van de eerste officiële houwersdiploma's ontstaat er een nieuwe adel onder de grond. De Meester-houwer klimt op tot de onbetwiste koning van de schacht. Hij is degene die de zwarte wand 'leest', die weet waar het gevaar loert en die met één blik bepaalt hoe hard er gezwoegd wordt. Heb je je diploma? Dan verdien je niet alleen meer centen, maar dwing je diep respect af bij elke man die de lift in stapt.</p>
+                    <p class="chapter__text">Vanaf 1911 is de mijnwerker niet langer een 'ongeoefende zwoeger', maar een gediplomeerd vakman. Met de invoering van de eerste officiële houwersdiploma's ontstaat er een nieuwe adel onder de grond. De <button type="button" class="term" data-term="meester-houwer">Meester-houwer</button> klimt op tot de onbetwiste koning van de <button type="button" class="term" data-term="schacht">schacht</button>. Hij is degene die de zwarte wand 'leest', die weet waar het gevaar loert en die met één blik bepaalt hoe hard er gezwoegd wordt. Heb je je diploma? Dan verdien je niet alleen meer centen, maar dwing je diep respect af bij elke man die de lift in stapt.</p>
                 </div>
             </section>
             <section class="chapter">
                 <p class="chapter__date">1919</p>
                 <h2 class="chapter__title">Meer dan Kolen Alleen</h2>
                 <div class="chapter__grid">
-                    <p class="chapter__text">Na jaren van uitputting en hele lange dagen valt in 1919 eindelijk de beslissing: de achturige werkdag is een feit. Voor de koempel betekent dit een revolutie; voor het eerst blijft er zonlicht over na de dienst. De mijn grijpt dit moment aan om de 'vrije tijd' van haar arbeiders vorm te geven.</p>
+                    <p class="chapter__text">Na jaren van uitputting en hele lange dagen valt in 1919 eindelijk de beslissing: de achturige werkdag is een feit. Voor de <button type="button" class="term" data-term="koempel">koempel</button> betekent dit een revolutie; voor het eerst blijft er zonlicht over na de dienst. De mijn grijpt dit moment aan om de 'vrije tijd' van haar arbeiders vorm te geven.</p>
                     <div class="media-frame media-frame--mask-4">
                         <img src="assets/MijnCultuur-1919.jpg" alt="Acht-urige werkdag 1919" class="media-frame__media" width="440" height="300" loading="lazy" decoding="async">
                     </div>
@@ -484,7 +498,7 @@
                     <div class="media-frame media-frame--mask-3" data-lamp>
                         <img src="assets/MijnCultuur-1952.jpg" alt="De Schaf 1952" class="media-frame__media" width="680" height="453" loading="lazy" decoding="async">
                     </div>
-                    <p class="chapter__text">Vanaf 1952 wordt de 'schaf' officieel hét ankerpunt van de dag. De koempels kruipen bij elkaar op houten balken of lege kisten voor hun gezamenlijke pauze. In het schijnsel van hun hoofdlampen worden de boterhammen met tevredenheid uitgepakt. Maar de schaf is veel meer dan alleen eten; het is het moment waarop de pikorde wegvalt. Hier worden de scherpste grappen gemaakt, de wildste verhalen gedeeld en de diepste zorgen besproken.</p>
+                    <p class="chapter__text">Vanaf 1952 wordt de '<button type="button" class="term" data-term="schaf">schaf</button>' officieel hét ankerpunt van de dag. De koempels kruipen bij elkaar op houten balken of lege kisten voor hun gezamenlijke pauze. In het schijnsel van hun hoofdlampen worden de boterhammen met tevredenheid uitgepakt. Maar de schaf is veel meer dan alleen eten; het is het moment waarop de pikorde wegvalt. Hier worden de scherpste grappen gemaakt, de wildste verhalen gedeeld en de diepste zorgen besproken.</p>
                 </div>
             </section>
             <section class="chapter outro">
@@ -668,6 +682,14 @@
             </video>
         </div>
     </dialog>
+
+    <!-- INFOKAART voor woordenboek, hotspots en mijnenkaart (js/discover.js) -->
+    <aside id="info-card" class="info-card" role="dialog" aria-labelledby="info-card-title" aria-describedby="info-card-text" tabindex="-1" hidden>
+        <button type="button" class="info-card__close" aria-label="Sluiten"><span aria-hidden="true">&times;</span></button>
+        <p class="info-card__kicker"></p>
+        <h2 id="info-card-title" class="info-card__title"></h2>
+        <p id="info-card-text" class="info-card__text"></p>
+    </aside>
 
 </body>
 </html>
